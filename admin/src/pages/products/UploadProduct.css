@@ -1,0 +1,251 @@
+.upload-product {
+}
+.product-upload {
+  margin: 20px;
+}
+.basic-details {
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  height: auto;
+}
+
+.basic-details h1 {
+  text-align: center;
+  font-size: 36px;
+  font-weight: 500;
+  padding: 20px 0;
+}
+.product-description {
+  padding: 10px 0;
+  display: flex;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+.product-description label {
+  font-size: 22px;
+  font-weight: 700;
+}
+.product-name {
+  padding: 10px 0;
+  display: flex;
+  border-radius: 10px;
+  justify-content: space-between;
+}
+
+.product-name label {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.product-name input,
+.product-name select,
+.product-name textarea,
+.product-description textarea,
+.product-pricing input,
+.product-category select,
+.product-status select {
+  font-size: 16px; /* Corrected from font-style */
+  padding: 10px;
+  width: 800px;
+  border-radius: 10px;
+  border: 1px solid;
+  box-sizing: border-box; /* To ensure padding doesn't break layout */
+}
+
+.product-name textarea {
+  height: 100px;
+}
+
+.product-name input,
+.product-name select {
+  width: 800px;
+}
+
+.image-upload-cont {
+  display: flex;
+  justify-content: space-around;
+}
+
+.image-upload {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  color: #000;
+}
+
+.image-upload label {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.image-upload input {
+  font-size: 16px; /* Corrected from font-style */
+
+  box-sizing: border-box;
+}
+
+.product-pricing {
+  margin: 20px 0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  height: auto;
+}
+
+.span-price,
+.span-stock {
+  margin: 20px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-pricing label {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.product-pricing input {
+  font-size: 16px; /* Corrected */
+  padding: 10px;
+  width: 800px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.product-status {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  height: auto;
+}
+
+.product-category {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  height: auto;
+}
+
+.product-category label {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.product-category select {
+  font-size: 16px;
+  padding: 10px;
+  width: 800px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.product-status label {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.product-status select {
+  font-size: 16px;
+  padding: 10px;
+  width: 800px;
+  border-radius: 10px;
+  border: 1px solid;
+}
+
+.product-submit {
+  display: flex;
+  margin: 20px 0;
+  color: #000;
+  padding: 20px;
+  height: auto;
+  justify-content: space-around;
+}
+
+.submit-btn {
+  padding: 20px;
+  background: #11111f;
+  font-size: 18px;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submit-btn:hover {
+  background: #ccc; /* Hover effect */
+  color: #11111f;
+}
+
+.upload-img {
+  width: 100%;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+}
+
+.upload-imgcont {
+  text-align: center;
+  padding: 50px 10px;
+  width: 800px;
+
+ 
+  border-radius: 10px;
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+@media (max-width: 768px) {
+  .basic-details,
+  .image-upload,
+  .product-pricing,
+  .product-category,
+  .product-status,
+  .product-submit {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .product-name input,
+  .product-name select,
+  .product-name textarea,
+  .product-pricing input,
+  .product-category select,
+  .product-status select {
+    width: 100%;
+  }
+
+  .product-submit .submit-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+}
+.image-preview {
+  margin: 10px 0;
+}

@@ -1,0 +1,114 @@
+/* General styles for the page content */
+.settings-content {
+  padding-top: 150px;
+  padding-bottom: 150px;
+}
+
+/* Container styles */
+.settings-container {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Row styles to manage grid layout */
+
+/* Column for left and right sections */
+
+.settings-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.settings-card-body {
+  flex: 1 1 auto;
+}
+.settings-card-body p {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 24px;
+  margin-bottom: 5px;
+  color: #7e7e7e;
+}
+.settings-card {
+  /* min-width: 0; */
+  word-wrap: break-word;
+}
+.settings-address-card {
+  display: flex;
+  justify-content: space-around;
+  position: relative;
+  /* min-width: 0; */
+}
+.settings-card h5{
+    font-size: 20px;
+}
+.contact-form-input-style {
+  margin-bottom: 20px;
+}
+.settings-card-body input {
+  border: 1px solid #ececec;
+  border-radius: 10px;
+  /* height: 64px; */
+  box-shadow: none;
+  padding: 15px;
+  margin: 10px 0;
+  font-size: 16px;
+  width: 100%;
+}
+.settings-card-body address {
+  margin: 1rem 0;
+  font-style: normal;
+  line-height: inherit;
+}
+.settings-card-header {
+  padding: 1rem;
+  margin-bottom: 0;
+  background-color: #f7f8f9;
+  border-bottom: 1px solid #ececec;
+}
+.dashboard-pane {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  /* justify-content: space-between; */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background: #fff;
+
+  list-style: none;
+}
+.dashboard-content {
+  max-width: 600px;
+  width: 100%;
+}
+.dashboard-menu {
+  width: 200px;
+  padding: 10px;
+  background: #ffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+.dashboard-item {
+  position: relative;
+  /* width: 100%; */
+  border: 1px solid #ececec;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.dashboard-item .dashboard-link {
+  width: 100%;
+  font-size: 16px;
+  color: #7e7e7e;
+  /* padding: 15px 30px; */
+  font-family: "Quicksand", sans-serif;
+  font-weight: 700;
+}
+.dashboard-item .dashboard-link.active {
+  color: #fff;
+  font-size: 18px;
+  padding: 10px;
+  background-color: #3bb77e;
+  width: 100%;
+  border-radius: 5px;
+}

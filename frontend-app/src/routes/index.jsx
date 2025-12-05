@@ -1,0 +1,113 @@
+// ✅ /src/routes/index.jsx
+import React from "react";
+import { createBrowserRouter } from "react-router-dom";
+
+// Layout
+import App from "../App";
+
+// Pages
+import { Home } from "../components/pages/Home";
+import { About } from "../components/pages/About";
+import { ContactPage } from "../components/pages/ContactPage";
+import { FeatureCategoriesPage } from "../components/pages/popular/FeatureCategoriesPage";
+import { DailyDealsProductPage } from "../components/pages/dailydeals/DailyDealsProductPage";
+import { SmartFarmingProductPage } from "../components/pages/smartfarming/SmartFarmingProductPage";
+import { SeasonalProductsPage } from "../components/pages/seasonalproducts/SeasonalProductsPage";
+import { ProductListing } from "../components/pages/listing/ProductListing";
+import { SingleProductListing } from "../components/pages/listing/SingleProductListing";
+import { CartPage } from "../components/pages/cart/CartPage";
+import { Checkout } from "../components/pages/cart/Checkout";
+import { Invoice } from "../components/pages/invoice/Invoice";
+import { Settings } from "../components/pages/settings/Settings";
+import { Wishlist } from "../components/pages/wishlist/Wishlist";
+import { Affiliations } from "../components/pages/Affiliations";
+import { BrandsPage } from "../components/pages/BrandsPage";
+import { TrackMyOrders } from "../components/pages/TrackMyOrders";
+import { DailyDealsProducts } from "../components/pages/dailydeals/DailyDealsProducts";
+import { AllCategoriesProducts } from "../components/pages/categorywise/AllCategoriesProducts";
+import { HomeProducts } from "../components/pages/popular/HomeProducts";
+
+// Auth
+import { CustomerSignup } from "../components/auth/CustomerSignup";
+import { CustomerProfile } from "../components/auth/CustomerProfile";
+import { CustomerLogin } from "../components/auth/CustomerLogin.jsx";
+import { CustomerProtectedRoute } from "./PrivateRoute.jsx";
+
+// Protected Route
+
+// ✅ Define all routes
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      { path: "", element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <ContactPage /> },
+
+      // Popular & Featured
+      { path: "featured-category", element: <HomeProducts /> },
+      { path: "featured-category/:categoryName/:productId", element: <FeatureCategoriesPage /> },
+
+      // Daily Deals
+      { path: "daily-deals-category", element: <DailyDealsProducts /> },
+      { path: "daily-deals/:categoryName/:productId", element: <DailyDealsProductPage /> },
+
+      // Smart Farming / Seasonal
+      { path: "smart-farming/:categoryName/:productName", element: <SmartFarmingProductPage /> },
+      { path: "seasonal/:categoryName/:productName", element: <SeasonalProductsPage /> },
+
+      // Product Routes
+      { path: "all-categories", element: <AllCategoriesProducts /> },
+      { path: "products-categories/:categoryName", element: <ProductListing /> },
+      { path: "products-categories/:categoryName/:productId", element: <SingleProductListing /> },
+
+      // User Routes
+      { path: "wishlist", element: <Wishlist /> },
+      { path: "settings", element: <Settings /> },
+
+      // Auth
+      { path: "login", element: <CustomerLogin /> },
+      { path: "signup", element: <CustomerSignup /> },
+      {
+        path: "profile",
+        element: (
+          <CustomerProtectedRoute>
+            <CustomerProfile />
+          </CustomerProtectedRoute>
+        ),
+      },
+      {
+        path: "cartpage",
+        element: (
+          <CustomerProtectedRoute>
+            <CartPage />
+          </CustomerProtectedRoute>
+        ),
+      },
+      {
+        path: "checkout",
+        element: (
+          <CustomerProtectedRoute>
+            <Checkout />
+          </CustomerProtectedRoute>
+        ),
+      },
+      {
+        path: "trackmyorder",
+        element: (
+          <CustomerProtectedRoute>
+            <TrackMyOrders />
+          </CustomerProtectedRoute>
+        ),
+      },
+
+      // Checkout, Invoice, Brands
+      { path: "invoice", element: <Invoice /> },
+      { path: "brands", element: <BrandsPage /> },
+      { path: "affiliations", element: <Affiliations /> },
+    ],
+  },
+]);
+
+export default router;

@@ -1,0 +1,215 @@
+
+.customer-form {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fefefe;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form heading */
+.customer-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Input & select styling */
+.customer-form input,
+.customer-form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* Button styling */
+.customer-form button {
+  width: 100%;
+  padding: 10px 0;
+  background-color: #4caf50; /* green for save */
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.customer-form button:hover {
+  background-color: #45a049;
+}
+
+/* Optional: responsive for smaller screens */
+@media (max-width: 600px) {
+  .customer-form {
+    padding: 15px;
+  }
+}
+.all-admincustomers {
+ width: 100%;
+  background: #ffffff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+  padding: 20px;
+
+  margin: 20px;
+  border-radius: 10px;
+}
+
+/* Header */
+.admincustomer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.admincustomer-head h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #333;
+}
+/* Tabs */
+.admin-tabs {
+  margin-bottom: 15px;
+}
+
+.admin-tabs button {
+  margin-right: 10px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-tabs button.active {
+  border: 2px solid #007bff;
+  background: #eaf3ff;
+  font-weight: bold;
+}
+
+/* Search + Sort */
+.admin-search-sort {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.admin-search-sort input {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.admin-search-sort select {
+  margin-left: 15px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Table */
+.table-responsive-customers {
+  overflow-x: auto;
+}
+
+.table-customer {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-customer th,
+.table-customer td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.table-customer th {
+  background: #f4f6f9;
+  font-weight: 600;
+  color: #333;
+}
+
+.table-customer tbody tr:hover {
+  background: #f9f9ff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-search-sort {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-search-sort input {
+    margin-bottom: 10px;
+  }
+}/* Rows per page dropdown */
+.rows-per-page {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rows-per-page select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: border-color 0.2s;
+}
+
+.rows-per-page select:hover {
+  border-color: #007bff;
+}
+
+/* Pagination container */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+/* Pagination buttons */
+.pagination button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Current page text */
+.pagination span {
+  font-weight: 500;
+}

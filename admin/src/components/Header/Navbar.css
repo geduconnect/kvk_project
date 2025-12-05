@@ -1,0 +1,382 @@
+/* Header and Admin Product Header Styling */
+
+.admin-sidebar {
+  display: flex;
+  transition: all 0.3s ease;
+  align-items: center;
+  /* width: 100%; */
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  justify-content: space-around;
+}
+.admin-sidebar.collapsed {
+  width: 70px; /* Collapsed sidebar width */
+}
+/* Admin Logo Styling */
+.admin-logo {
+  width: 140px;
+  height: 50px;
+  padding: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.adminproduct-head-right {
+  display: flex;
+  align-items: center;
+  width: 25%;
+  justify-content: space-between;
+}
+.nav-toggle {
+  display: flex;
+  justify-content: space-between;
+  /* width: 200px; */
+  padding: 10px 20px;
+  background: none;
+}
+.nav-toggle img {
+  width: 20px;
+  height: 20px;
+}
+
+.admin_sidebar {
+  position: fixed;
+  /* height: 100%; */
+  width: 155px;
+  /* flex-direction: column; */
+  padding: 5.9px;
+  /* width: calc(100% - 165px); */
+  /* transition: margin-left 300ms; */
+  /* box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5); */
+  /* z-index: 100; */
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+
+  transition: left 300ms;
+}
+#menu-toggle {
+  display: none;
+}
+#menu-toggle:checked ~ .admin_sidebar {
+  width: 60px;
+}
+
+#menu-toggle:checked ~ .main-content {
+  margin-left: 60px;
+  width: calc(100% - 60px);
+}
+
+#menu-toggle:checked ~ .main-content header {
+  left: 60px;
+}
+.admin-panel {
+  display: flex;
+  flex-direction: row;
+  transition: all 0.3s ease;
+}
+
+.admin-box {
+  padding: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+  /* list-style: none; */
+  display: flex;
+  text-align: left;
+  align-items: center;
+  /* padding: 10px 20px; */
+  justify-content: space-between;
+}
+.admin-box.closesubmenu {
+  height: auto;
+}
+.admin-box p {
+  font-size: 16px;
+  margin: 0;
+  display: block;
+}
+
+.admin-box:hover {
+  background: #ff914d;
+}
+.submenu-wrapper {
+  margin-left: 40px;
+}
+.admin-submenu {
+  position: relative;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.admin-submenu li {
+  padding: 10px 40px;
+  cursor: pointer;
+}
+
+.admin-submenu li:hover {
+  background-color: #444;
+}
+
+.admin-submenu::before {
+  position: absolute;
+  content: "";
+  width: 1px;
+  height: 100%;
+  top: 0px;
+  left: 30px;
+  background-color: rgba(0, 0, 0, 0.1);
+  list-style: none;
+  /* text-align: left; */
+  /* padding: 10px 40px; */
+}
+.admin-submenu li {
+  padding: 5px 0;
+}
+.admin-submenu li:hover {
+  background: #ff914d;
+}
+.admin-box img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.form-control {
+  padding: 10px;
+  outline: none;
+  border: none;
+  background: none;
+  font-size: 18px;
+}
+
+.search-container {
+  width: 280px;
+  border: none;
+}
+
+.input-group {
+  outline: none;
+  width: 280px;
+  align-items: center;
+  border: none;
+}
+
+.btn-search {
+  width: 30px;
+  border-radius: 10px;
+  height: 30px;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+/* Dropdown Menu Styles */
+.selectDrop {
+  box-shadow: 0 3px 6px rgba(0 0 0 / 20%);
+  padding: 10px;
+  height: auto;
+  background: #fff;
+  position: absolute;
+  text-align: left;
+  top: 110%;
+  left: -10px;
+  z-index: 100;
+  border-radius: 5px;
+}
+
+.searchResults {
+  margin-top: 10px;
+  overflow-y: scroll;
+  padding: 5px 0;
+  max-height: 250px;
+}
+
+.searchResults li {
+  list-style: none;
+  font-size: 18px;
+  padding: 5px 0;
+}
+
+.searchResults::-webkit-scrollbar {
+  width: 5px !important;
+}
+
+.searchResults::-webkit-scrollbar-thumb {
+  background: #ccc !important;
+}
+
+.searchResults li:hover {
+  background: #140e0e;
+  color: #fff;
+}
+
+.searchResults li:active {
+  background: #ccc;
+  color: #fff;
+}
+
+.openSelect {
+  display: block;
+  padding: 10px 0;
+}
+
+/* Dropdown for My Account */
+.topbar-dropdown {
+  width: 140px;
+  box-shadow: 0 3px 6px rgba(0 0 0 / 20%);
+  padding: 10px;
+  height: auto;
+  background: #fff;
+  cursor: pointer;
+  position: absolute;
+  text-align: left;
+  top: 110%;
+  left: -5px;
+  z-index: 100;
+  border-radius: 5px;
+}
+
+/* Account Dropdown */
+.myaccount-drop {
+  cursor: pointer;
+  position: relative;
+}
+
+.myaccount-drop::after {
+  content: "";
+  width: 1px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 5px;
+  right: 0px;
+}
+
+/* Navbar Button */
+.topbar-btn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  font-size: 18px;
+  background: none;
+}
+
+.topbar-btn:hover {
+  background-color: #ccc;
+}
+
+/* General Link Styling */
+a {
+  text-decoration: none;
+  color: #4b0202;
+}
+
+.img-fluid {
+  width: 100px;
+  height: 80px;
+}
+
+/* Navbar Branding and Menu */
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
+
+nav {
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+}
+
+.nav-btn {
+  border-radius: 10px;
+  width: 100px;
+  text-decoration: none;
+  color: #f9f2ec;
+  cursor: pointer;
+  background: #4b0202;
+  border: none;
+}
+
+nav ul {
+  display: flex;
+}
+
+nav ul li {
+  list-style: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+nav ul li a {
+  display: block;
+  line-height: 1px;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #4b0202;
+  margin: 1.5rem;
+}
+
+nav ul li a:hover {
+  color: blueviolet;
+}
+
+/* Mobile View Tweaks */
+nav .menu {
+  display: none;
+  position: absolute;
+  top: 0.75rem;
+  right: 0.5rem;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 2.25rem;
+  height: 2rem;
+}
+
+nav .menu span {
+  height: 0.4rem;
+  width: 100%;
+  background-color: #292323;
+  border-radius: 0.2rem;
+}
+
+/* Mobile Menu */
+@media (max-width: 480px) {
+  .nav .menu {
+    display: flex;
+  }
+
+  .nav {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .nav ul {
+    display: none;
+    flex-direction: column;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 0.25rem;
+  }
+
+  .nav ul.open {
+    display: flex;
+    text-align: left;
+  }
+
+  .nav ul li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav ul li a {
+    margin: 0.2rem 0.5rem;
+  }
+}

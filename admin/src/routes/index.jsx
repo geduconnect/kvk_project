@@ -1,0 +1,160 @@
+// routes/index.jsx
+import React from 'react';
+import { createBrowserRouter } from "react-router-dom";
+import App from "../App";
+import { AdminPanel } from "../pages/AdminPanel";
+import { Dashboard } from "../pages/dashboard/Dashboard";
+
+import { Settings } from "../pages/settings/Settings";
+import { Logout } from "../pages/Logout";
+import { UploadProduct } from "../pages/products/UploadProduct";
+// import { ProductDetails } from "../pages/products/ProductDetails";
+import { SignUp } from "../pages/SignUp";
+import { ProductTable } from "../pages/products/ProductTable";
+import { ProductManagement } from '../pages/products/ProductManagement';
+import { Invoice } from '../pages/invoice/Invoice';
+import { OrderManagement } from '../pages/orders/OrderManagement';
+import { OrderDetails } from '../pages/orders/OrdersDetails';
+import { OrdersTable } from '../pages/orders/OrdersTable';
+import { CustomerManagement } from '../pages/customers/CustomerManagement';
+import { CustomerDetails } from '../pages/customers/CustomerDetails';
+import { AddCustomer } from '../pages/customers/AddCustomer';
+import { CustomerTable } from '../pages/customers/CustomerTable';
+import { EditCustomer } from '../pages/customers/EditCustomer';
+import { AddOrder } from '../pages/orders/AddOrder';
+import { CategoryManagement } from '../pages/categories/CategoryManagement';
+import { UploadCategory } from '../pages/categories/UploadCategory';
+import { CategoryTable } from '../pages/categories/CategoryTable';
+import { ProductDetails } from '../pages/products/ProductDetails';
+import { PopularProductsTable } from '../pages/PopularProductsTable';
+import { UserManagement } from '../pages/users/UserManagement';
+import { AddUser } from '../pages/users/AddUser';
+import { UserTable } from '../pages/users/UserTable';
+import { UserDetails } from '../pages/users/UserDetails';
+import { EditUser } from '../pages/users/EditUser';
+import { EditCategory } from '../pages/categories/EditCategory';
+import { EditProduct } from '../pages/products/EditProduct';
+import { AdminTrackOrders } from '../pages/orders/AdminTrackOrders';
+import { MyAccount } from '../pages/MyAccount';
+import { Login } from '../pages/Login';
+import { BrandsTable } from '../pages/brands/BrandsTable';
+import { AddBrand } from '../pages/brands/AddBrand';
+import { EditBrand } from '../pages/brands/EditBrand';
+import { BrandManagement } from '../pages/brands/BrandManagement';
+import AdminProtectedRoute from './PrivateRoute';
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "",
+        element: (
+          <AdminProtectedRoute>
+            <AdminPanel />
+          </AdminProtectedRoute>
+        ),
+        children: [
+          {
+            path: "/dashboard",
+            element: <Dashboard />,
+          },
+          {
+            path: "/allorders",
+            element: <OrderManagement />, // parent wrapper
+            children: [
+              { path: "/allorders", element: <OrdersTable /> },
+              { path: "addOrder", element: <AddOrder /> },
+              { path: ":orderId/details", element: <OrderDetails /> },
+              { path: ":orderId/track", element: <AdminTrackOrders /> },
+            ],
+          },
+          {
+            path: "/users",
+            element: <UserManagement />,
+            children: [
+              { path: "addUser", element: <AddUser /> },
+              { path: "/users/userTable", element: <UserTable /> },
+              { path: ":id", element: <UserDetails /> },
+              { path: "edit/:id", element: <EditUser /> },
+            ],
+          },
+          {
+            path: "/customers",
+            element: <CustomerManagement />,
+            children: [
+              { path: "customerTable", element: <CustomerTable /> },
+              { path: ":id", element: <CustomerDetails /> },
+      { path: "customer/:customerId/orders", element: <OrdersTable /> },
+              { path: "customer/:customerId/orders/:orderId/details", element: <OrderDetails /> },
+            ],
+          },
+          {
+            path: "categories",
+            element: <CategoryManagement />,
+            children: [
+              { path: "uploadCategory", element: <UploadCategory /> },
+              { path: "categoryTable", element: <CategoryTable /> },
+              { path: "edit/:id", element: <EditCategory /> },
+            ],
+          },
+          {
+            path: "allproducts",
+            element: <ProductManagement />,
+            children: [
+              { path: "uploadProduct", element: <UploadProduct /> },
+              { path: "productTable", element: <ProductTable /> },
+              { path: "productDetails/:id", element: <ProductDetails /> },
+              { path: "editProduct/:id", element: <EditProduct /> },
+            ],
+          },
+          {
+            path: "brands",
+            element: <BrandManagement />,
+            children: [
+              { path: "brandsTable", element: <BrandsTable /> },
+              { path: "add", element: <AddBrand /> },
+              { path: "edit/:id", element: <EditBrand /> },
+            ],
+          },
+          {
+            path: "popularProductsTable",
+            element: <PopularProductsTable />,
+          },
+          {
+            path: "invoices",
+            element: <Invoice />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
+          {
+            path: "logout",
+            element: <Logout />,
+          },
+        ],
+      },
+
+      {
+        path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/myAccount",
+        element:
+          <AdminProtectedRoute roles={["customer", "admin"]}>
+            <h2>My Profile Page</h2>
+          </AdminProtectedRoute>
+        ,
+      },
+    ],
+  },
+]);
+
+export default router;

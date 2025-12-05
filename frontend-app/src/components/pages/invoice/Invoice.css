@@ -1,0 +1,198 @@
+/* General Invoice Styles */
+.invoice-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+.invoice-inner {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.invoice-header {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 20px;
+}
+
+
+
+.invoice-header .invoice-numb {
+  text-align: right;
+}
+
+.invoice-header-1 {
+  font-weight: bold;
+  color: #333;
+}
+
+.invoice-top {
+  padding: 20px 0;
+}
+
+.invoice-title-1 {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.invoice-addr-1 {
+  font-size: 14px;
+  color: #555;
+}
+
+.invoice-number .invoice-addr-1,
+.invoice-number .invoice-from-1 {
+  font-size: 14px;
+  color: #555;
+}
+
+.invoice-center {
+  margin-top: 20px;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table th, .invoice-table td {
+  padding: 12px;
+  border: 1px solid #eee;
+  text-align: left;
+}
+
+.invoice-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+.invoice-table td.text-center {
+  text-align: center;
+}
+
+.invoice-table td.text-right {
+  text-align: right;
+}
+
+.invoice-bottom {
+  margin-top: 40px;
+}
+
+.important-notes-list-1 {
+  list-style-type: disc;
+  margin: 0;
+  padding: 0 0 0 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.important-notes-list-1 li {
+  margin-bottom: 10px;
+}
+
+.invoice-btn-section {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.invoice-btn-section .btn {
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.invoice-btn-section .btn-custom {
+  background-color: #2d87f0;
+  color: #fff;
+  border: none;
+}
+
+.invoice-btn-section .btn-custom:hover {
+  background-color: #1c64b2;
+}
+
+.invoice-btn-section .btn-print {
+  background-color: #4CAF50;
+}
+
+.invoice-btn-section .btn-print:hover {
+  background-color: #45a049;
+}
+
+.invoice-btn-section .btn-download {
+  background-color: #f39c12;
+}
+
+.invoice-btn-section .btn-download:hover {
+  background-color: #e67e22;
+}
+
+.mobile-social-icon {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.invoice-top-row {
+  display: flex;justify-content: space-between;
+}
+
+.mobile-social-icon a img {
+  width: 25px;
+  height: 25px;
+}
+
+.print-hide {
+  display: none;
+}
+
+.text-end {
+  text-align: right;
+}
+
+.text-13 {
+  font-size: 13px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .invoice-header .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .invoice-top .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .invoice-btn-section {
+    text-align: center;
+  }
+
+  .invoice-btn-section .btn {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .invoice-row {
+    display: block;
+  }
+
+  .invoice-inner {
+    padding: 20px;
+  }
+}
+.invoice-logo{
+  width: 200px;
+  height: 100px;
+}
+.invoice-logo img{
+  width: 100%;
+  height: 100%;
+}

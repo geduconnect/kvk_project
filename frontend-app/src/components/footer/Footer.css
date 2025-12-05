@@ -1,0 +1,217 @@
+/* Footer Base Styles */
+footer {
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+  margin-top: 50px;
+  padding: 50px 0;
+}
+
+.footer-logo {
+  width: 150px; /* Adjusted for mobile responsiveness */
+  padding: 10px 0;
+}
+
+.footer-logo img {
+  width: 100%;
+  height: auto;
+}
+
+/* Grid Layout for Footer */
+footer .grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Default 4-column layout */
+  gap: 20px;
+}
+
+footer h2 {
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+footer p {
+  font-size: 13px;
+  opacity: 0.6;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+footer .icon i {
+  color: black;
+}
+
+footer ul li a {
+  opacity: 0.7;
+  color: #000;
+  font-size: 13px;
+}
+
+footer ul li {
+  margin-bottom: 10px;
+}
+
+footer .post li {
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgb(63, 62, 62);
+}
+
+footer .post li:nth-last-child(1) {
+  border-bottom: none;
+}
+
+footer .post label,
+footer .post span {
+  opacity: 0.5;
+  margin-right: 10px;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+footer input {
+  background: none;
+  border: 1px solid rgb(63, 62, 62);
+  border-radius: 5px;
+  margin: 10px 0;
+}
+
+footer .primary-btn {
+  padding: 20px 20px;
+  border-radius: 0px;
+  text-align: center;
+}
+
+.legal {
+  text-align: center;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  border-top: 1px solid rgb(63, 62, 62);
+  color: #000;
+}
+
+.legal p {
+  opacity: 0.5;
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 768px) {
+  footer .grid {
+    grid-template-columns: 1fr; /* Stack content vertically on small screens */
+  }
+
+  footer h2 {
+    font-size: 1.5rem;
+  }
+
+  footer p {
+    font-size: 12px;
+  }
+
+  footer .icon i {
+    margin: 0 10px 0 0; /* Adjust icon spacing */
+  }
+
+  footer ul li a {
+    font-size: 14px;
+  }
+
+  footer .post li {
+    margin-bottom: 15px;
+  }
+
+  footer input {
+    width: 100%; /* Make input fields full width */
+  }
+
+  .legal {
+    flex-direction: column; /* Stack legal content on smaller screens */
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .footer-logo {
+    width: 120px; /* Resize logo for mobile */
+  }
+}
+
+/* Smaller Screens (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  footer h2 {
+    font-size: 1.2rem;
+  }
+
+  footer .grid {
+    grid-template-columns: 1fr; /* Stack everything in a single column */
+    gap: 15px;
+  }
+
+  .footer-logo {
+    width: 100px; /* Further adjust logo size */
+  }
+
+  .subfooter-features {
+    flex-direction: column; /* Stack feature cards vertically */
+    gap: 15px;
+  }
+
+  .subfooter-features-card {
+    padding: 12px;
+    flex-direction: column; /* Stack contents inside each card */
+    text-align: center;
+  }
+
+  footer .primary-btn {
+    padding: 15px 15px; /* Adjust button padding for smaller screens */
+  }
+
+  .footer-address ul li {
+    font-size: 12px; /* Adjust address font size */
+  }
+}
+
+/* Map Responsiveness */
+.map iframe {
+  width: 100%;
+  height: 250px; /* Ensure the map remains responsive */
+}
+
+/* Social Icons */
+.icon i {
+  margin: 0 10px;
+  color: #b6b7b9;
+}
+
+/* Label Styling */
+footer label {
+  margin: 20px 0;
+  color: #000;
+}
+
+/* Subfooter Features Styling */
+.subfooter {
+  display: flex;
+  padding: 20px 0;
+  justify-content: center;
+}
+
+.subfooter-features {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.subfooter-features-card {
+  display: flex;
+  background: whitesmoke;
+  color: #000;
+  padding: 10px;
+  border-radius: 15px;
+  justify-content: space-between;
+  flex-direction: column; /* Stack card contents */
+  align-items: center;
+}
+
+.features-card-content {
+  padding: 10px;
+}
