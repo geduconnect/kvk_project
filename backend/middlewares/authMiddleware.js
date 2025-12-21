@@ -51,22 +51,28 @@ export const verifyCustomer = (req, res, next) => {
     req.customer = decoded;
     next();
   } catch (err) {
-    console.error("JWT verify error:", err.message);
-    return res.status(401).json({ isAuthenticated: false });
+    return res.status(403).json({ isAuthenticated: false });
   }
 };
 
+
+
 export const verifyAdmin = (req, res, next) => {
   const token = req.cookies.admin_token;
-  if (!token) return res.status(401).json({ message: "Admin not logged in" });
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(403).json({ message: "Invalid admin token" });
+  if (!token) {
+    return res.status(401).json({ isAuthenticated: false });
+  }
 
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET); // ✅ SAME SECRET
     req.admin = decoded;
     next();
-  });
-}
+  } catch (err) {
+    return res.status(403).json({ isAuthenticated: false });
+  }
+};
+
 
 
 export default verifyToken;

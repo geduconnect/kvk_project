@@ -4,6 +4,7 @@ import {
   // addOrderItem,
   getOrders,
   getOrdersByCustomer,
+  getPublicOrderById,
   getOrderById,
   // updateOrderItem,
   updateOrder,
@@ -23,7 +24,7 @@ router.post("/", addOrder);
 // Customer orders
 router.get("/customer/:customerId", getOrdersByCustomer);
 router.get("/customer-summary", getCustomerOrderSummary);
-
+router.get("/public/orders/:id", getPublicOrderById);
 // router.post("/:orderId/items", addOrderItem);
 // router.put("/:orderId/items/:itemIdx", updateOrderItem);
 // router.delete("/:orderId/items/:itemId", deleteOrderItem);

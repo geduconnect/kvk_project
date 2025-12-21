@@ -161,7 +161,6 @@ li {
   font-size: 18px;
 }
 
-
 .featured-products {
   position: relative;
   width: 100%;
@@ -509,6 +508,8 @@ li {
 }
 .categories-title {
   display: flex;
+  flex-direction: column;
+  padding: 15px 0;
   justify-content: center;
   align-content: center;
   align-items: center;
@@ -517,6 +518,7 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 0;
 }
 
 .brands-grid {

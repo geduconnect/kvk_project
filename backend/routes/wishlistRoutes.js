@@ -2,15 +2,16 @@ import express from "express";
 import {
   getWishlist,
   addToWishlist,
-  removeWishlistItem,
+  removeFromWishlist,
   clearWishlist,
 } from "../controllers/wishlistController.js";
 
 const router = express.Router();
 
-router.get("/:userId", getWishlist);              // Get all wishlist items
-router.post("/", addToWishlist);                  // Add product
-router.delete("/:userId/:productId", removeWishlistItem);  // Remove single item
-router.delete("/clear/:userId", clearWishlist);   // Clear all items
+// ✅ COOKIE BASED
+router.get("/", getWishlist);
+router.post("/", addToWishlist);
+router.delete("/:productId", removeFromWishlist);
+router.delete("/", clearWishlist);
 
 export default router;

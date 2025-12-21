@@ -100,13 +100,17 @@ export const OrderDetails = () => {
               value={order.status}
               onChange={(e) => setOrder({ ...order, status: e.target.value })}
             >
-              {["Pending", "Processing", "Completed", "Cancelled"].map(
-                (status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                )
-              )}
+              {["Pending",
+                "Processing",
+                "Shipped",
+                "Delivered",
+                "Cancelled"].map(
+                  (status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  )
+                )}
             </select>
             <button
               className="save-btn"
@@ -144,7 +148,19 @@ export const OrderDetails = () => {
                 <tbody>
                   {order.items.map((item, idx) => (
                     <tr key={idx}>
-                      <td>{item.title || "-"}</td>
+                      <td>
+                        <img
+                          src={`http://localhost:8000${item.productImages[0]}`}
+                          alt={item.productTitle || "Product"}
+                          style={{
+                            width: 50,
+                            height: 50,
+                            objectFit: "cover",
+                            borderRadius: 4,
+                            marginTop: 4,
+                          }}
+                        /> -
+                        {item.productTitle || "-"}</td>
                       <td>{item.description || "-"}</td>
                       <td>{item.billingCycle || "monthly"}</td>
                       <td>${Number(item.amount || 0).toFixed(2)}</td>

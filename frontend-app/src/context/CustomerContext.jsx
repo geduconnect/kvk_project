@@ -7,14 +7,14 @@ export const CustomerProvider = ({ children }) => {
   const [customer, setCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // ✅ Check if customer is logged in
+  // ✅ SAFE AUTH CHECK (NEVER STUCK)
   const checkAuth = async () => {
-    console.log("checkAuth → checking authentication...");
     try {
-      const res = await api.get("/auth/customer/check-auth");
-      console.log("checkAuth → response:", res.data);
+      const res = await api.get("/auth/customer/check-auth", {
+        withCredentials: true,
+      });
 
-      if (res.data.isAuthenticated) {
+      if (res.data?.isAuthenticated) {
         setCustomer(res.data.user);
         return res.data.user;
       } else {
@@ -22,11 +22,11 @@ export const CustomerProvider = ({ children }) => {
         return null;
       }
     } catch (err) {
-      console.error("checkAuth → error:", err);
+      console.error("checkAuth failed:", err.response?.data || err.message);
       setCustomer(null);
       return null;
     } finally {
-      setLoading(false);
+      setLoading(false); // ✅ GUARANTEED TO RUN
     }
   };
 
@@ -34,44 +34,49 @@ export const CustomerProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // ✅ Login customer
+  // ✅ COOKIE BASED LOGIN
   const login = async (email, password) => {
-    console.log("login → sending request...");
     try {
-      const res = await api.post("/auth/customer/login", { email, password });
-      console.log("login → login response:", res.data);
+      await api.post(
+        "/auth/customer/login",
+        { email, password },
+        { withCredentials: true }
+      );
 
-      // Immediately check auth to update context
-      const auth = await checkAuth();
-      console.log("login → checkAuth result:", auth);
-      return auth;
+      return await checkAuth(); // ✅ refresh user via cookie
     } catch (err) {
-      console.error("login → error:", err.response?.data || err);
       throw err;
     }
   };
 
-  // ✅ Logout
+  // ✅ COOKIE BASED LOGOUT
   const logout = async () => {
-    console.log("logout → sending request...");
     try {
-      await api.post("/auth/customer/logout");
-      setCustomer(null);
+      await api.post(
+        "/auth/customer/logout",
+        {},
+        { withCredentials: true }
+      );
     } catch (err) {
-      console.warn("logout → failed:", err);
+      console.warn("Logout failed:", err);
+    } finally {
+      setCustomer(null);
     }
   };
 
   return (
-    <CustomerContext.Provider value={{ customer, loading, checkAuth, login, logout }}>
+    <CustomerContext.Provider
+      value={{ customer, loading, login, logout }}
+    >
       {children}
     </CustomerContext.Provider>
   );
 };
 
-// ✅ Hook
 export const useCustomerAuth = () => {
   const context = useContext(CustomerContext);
-  if (!context) throw new Error("useCustomerAuth must be used within CustomerProvider");
+  if (!context) {
+    throw new Error("useCustomerAuth must be used inside CustomerProvider");
+  }
   return context;
 };

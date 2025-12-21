@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "./api"; // axios wrapper
-
+import loginIcons from "../assets/signin.gif";
+import iconpass from "../assets/eyeicon.jpg";
 export const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -13,25 +14,30 @@ export const Login = () => {
     setError("");
 
     try {
-      console.log("Submitting admin login...");
-      const res = await api.post("/admin/login", { email, password });
+      const res = await api.post(
+        "/admin/login",
+        { email, password },
+        { withCredentials: true } // ✅ IMPORTANT
+      );
 
-      console.log("Login response:", res.data);
-
-      // ✅ Redirect after successful login
-      navigate("/users/userTable");
+      navigate("/users/userTable"); // ✅ redirect only
     } catch (err) {
-      console.error("Login error:", err);
       setError(err.response?.data?.message || "Login failed");
     }
   };
 
   return (
-    <div className="login-form">
-      <h2>Admin Login</h2>
+    <div className="login-container">
       {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
+
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Admin Login</h2>
+
+        <div className="login-icon">
+          <img src={loginIcons} alt="login icon" />
+        </div>
+        {error && <p className="error">{error}</p>}
+        <div className="txtb">
           <label>Email</label>
           <input
             type="email"
@@ -41,17 +47,26 @@ export const Login = () => {
             required
           />
         </div>
-        <div>
+
+        <div className="text-pass">
           <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            required
-          />
+          <span className="txtb-pass">
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+            <span
+              className="toggle-pass"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <img src={iconpass} alt="toggle visibility" />
+            </span>
+          </span>
         </div>
-        <button type="submit" style={{ marginTop: "10px" }}>
+        <button className="logbtn" type="submit" style={{ marginTop: "10px" }}>
           Login
         </button>
       </form>

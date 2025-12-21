@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCustomerAuth } from "../../context/CustomerContext.jsx";
+import "./Login.css";
 
+import { Link, useNavigate } from "react-router-dom";
+import { useCustomerAuth } from "../../context/CustomerContext.jsx";
+import loginIcons from "../../assets/img/signin.gif";
+import iconpass from "../../assets/img/eyeicon.jpg";
 export const CustomerLogin = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { customer, login, loading } = useCustomerAuth();
   const [email, setEmail] = useState("");
@@ -22,34 +26,39 @@ export const CustomerLogin = () => {
     e.preventDefault();
     setSubmitting(true);
     setError("");
+
     console.log("handleSubmit → login attempt");
 
     try {
       const auth = await login(email, password);
-      console.log("handleSubmit → login success:", auth);
+      console.log("handleSubmit → login success", auth);
 
       if (auth) {
-        navigate("/profile"); // redirect after successful login
+        navigate("/profile");
       } else {
         setError("Login failed: no user returned");
       }
     } catch (err) {
-      console.error("handleSubmit → login error:", err.response?.data || err);
+      console.error("handleSubmit → error", err);
       setError(err.response?.data?.message || "Login failed");
     } finally {
-      setSubmitting(false);
+      setSubmitting(false); // ✅ guarantees UI unlock
     }
   };
-
   if (loading) return <div>Checking authentication...</div>;
 
   return (
-    <div className="login-form" style={{ maxWidth: "400px", margin: "auto", padding: "20px" }}>
-      <h2>Customer Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="login-container">
 
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
+
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h1>Customer Login</h1>
+        <div className="login-icon">
+          <img src={loginIcons} alt="login icon" />
+        </div>
+
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <div className="txtb">
           <label>Email</label>
           <input
             type="email"
@@ -60,20 +69,34 @@ export const CustomerLogin = () => {
           />
         </div>
 
-        <div style={{ marginBottom: "10px" }}>
+        <div className="text-pass">
           <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{ width: "100%", padding: "8px" }}
-          />
+          <span className="txtb-pass">
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              style={{ width: "100%", padding: "8px" }}
+            />
+            <span
+              className="toggle-pass"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <img src={iconpass} alt="toggle visibility" />
+            </span>
+          </span>
+        </div>
+        <div className="forgot-password">
+          <Link to="/forgot-password">Forgot Password?</Link>
         </div>
 
-        <button type="submit"  style={{ padding: "10px 20px" }}>
-          {/* {submitting ? "Logging in..." : "Login"} */}
+        <button type="submit" className="logbtn" disabled={submitting} >
+          {submitting ? "Logging in..." : "Login"}
         </button>
+        <p>
+          Don’t have an account? <Link to="/signup">Sign Up</Link>
+        </p>
       </form>
     </div>
   );

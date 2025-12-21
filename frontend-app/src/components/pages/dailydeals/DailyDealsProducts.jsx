@@ -72,52 +72,49 @@ export const DailyDealsProducts = () => {
 
   return (
     <div className="daily-deals">
-      {/* 🔹 Header */}
-      <div className="section-title">
-        <h2>🔥 Daily Deals</h2>
-        <Link to="/daily-deals-category" className="view-all-btn">
-          View All
-        </Link>
-      </div>
 
-      {/* 🔹 Category Tabs */}
-      <div className="dailydealstab-header">
-        <button
-          className={activeCategory === "" ? "dailydealstab-active" : "dailydealstab"}
-          onClick={() => setActiveCategory("")}
+      <div className="dailydeals-container">
+        <div
+          className="section-title"
+
         >
-          All
-        </button>
+          <h2>Daily Deals</h2>
+          <Link to="/daily-deals-category">
+          <button className="view-all-btn">View All</button>
+          </Link>
+        </div>
 
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            className={
-              activeCategory === String(cat.id)
-                ? "dailydealstab-active"
-                : "dailydealstab"
-            }
-            onClick={() => setActiveCategory(String(cat.id))}
-          >
-            {cat.name}
-          </button>
-        ))}
-      </div>
+        {/* 🔹 Category Tabs */}
+        <div className="dailydealstab-header">
 
-    
 
-      {/* 🔹 Products */}
-      {loading ? (
-        <p className="loading">⏳ Loading daily deals...</p>
-      ) : filteredProducts.length > 0 ? (
-        <div className="dailydeals-content">
-          {filteredProducts.map((ddproduct) => (
-            <DailyDealsCard key={ddproduct.id} ddproduct={ddproduct} />
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+
+              className={activeCategory === String(cat.id) ? "dailydealstab-active" : "dailydealstab"}
+              onClick={() => setActiveCategory(String(cat.id))}
+            >
+              {cat.name}
+            </button>
           ))}
         </div>
-      ) : (
-        <p className="no-products">🚫 No daily deals available today.</p>
-      )}
+
+
+
+        {/* 🔹 Products */}
+        {loading ? (
+          <p className="loading">⏳ Loading daily deals...</p>
+        ) : filteredProducts.length > 0 ? (
+          <div className="dailydeals-content">
+            {filteredProducts.map((ddproduct) => (
+              <DailyDealsCard key={ddproduct.id} ddproduct={ddproduct} />
+            ))}
+          </div>
+        ) : (
+          <p className="no-products">🚫 No daily deals available today.</p>
+        )}
+      </div>
     </div>
   );
 };

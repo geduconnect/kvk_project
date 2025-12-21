@@ -43,5 +43,27 @@ router.get("/popular/by-category", getPopularProductsByCategory);
 // ✅ Put fixed routes first
 
 router.patch("/:id/status", updateStatus);
+// ✅ GLOBAL SEARCH ROUTE
+router.get("/search", async (req, res) => {
+  try {
+    const { q } = req.query;
+
+    if (!q) return res.json([]);
+
+    const [products] = await db.query(
+      `SELECT * FROM products
+       WHERE name LIKE ? 
+          OR title LIKE ?
+          OR brand LIKE ?
+          OR category_name LIKE ?`,
+      [`%${q}%`, `%${q}%`, `%${q}%`, `%${q}%`]
+    );
+
+    res.json(products);
+  } catch (error) {
+    console.error("Search error:", error);
+    res.status(500).json({ message: "Search failed" });
+  }
+});
 
 export default router;

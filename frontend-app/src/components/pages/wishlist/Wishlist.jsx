@@ -36,28 +36,55 @@ export const Wishlist = () => {
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
-          {wishlistItems.map((item) => (
-            <tr key={item.id}>
-              <td>{item.title || item.name}</td>
-              <td>₹{item.price}</td>
-              <td>{item.stock > 0 ? "In Stock" : "Out of Stock"}</td>
-              <td>
-                <button
-                  className="wishlist-action-btn"
-                  onClick={() => handleMoveToCart(item)}
-                >
-                  Move to Cart
-                </button>
-                <button
-                  className="wishlist-remove-btn"
-                  onClick={() => removeFromWishlist(item.id)}
-                >
-                  Remove
-                </button>
-              </td>
-            </tr>
-          ))}
+          {wishlistItems.map((item) => {
+            const imageUrl =
+              item.images && item.images.length > 0
+                ? `http://localhost:8000${item.images[0]}`
+                : item.image
+                ? `http://localhost:8000${item.image}`
+                : null;
+
+            return (
+              <tr key={item.id}>
+                {/* ✅ IMAGE + TITLE */}
+                <td>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    <div className="img-box">
+                      {imageUrl ? (
+                        <img src={imageUrl} alt={item.title || item.name} />
+                      ) : (
+                        <span>No Image</span>
+                      )}
+                    </div>
+
+                    <span>{item.title || item.name}</span>
+                  </div>
+                </td>
+
+                <td>₹{item.price}</td>
+
+                <td>{item.stock > 0 ? "In Stock" : "Out of Stock"}</td>
+
+                <td>
+                  <button
+                    className="wishlist-action-btn"
+                    onClick={() => handleMoveToCart(item)}
+                  >
+                    Move to Cart
+                  </button>
+
+                  <button
+                    className="wishlist-remove-btn"
+                    onClick={() => removeFromWishlist(item.id)}
+                  >
+                    Remove
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
 

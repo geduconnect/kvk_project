@@ -9,7 +9,7 @@ import settingimg from "../assets/setting.png";
 import customerimg from "../assets/customer.png";
 import productsimg from "../assets/products.png";
 import logoutimg from "../assets/logout.png";
-import adminlogo from "../assets/iShopBazar.png";
+import adminlogo from "../assets/kvklogo1.png";
 import toggleimg from "../assets/List_menu_toggle-512.webp";
 
 // API function
@@ -48,7 +48,7 @@ export const AdminPanel = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/admin/login"); // redirect to login
+    navigate("/login"); // redirect to login
   };
 
   const handleCollapse = () => setIsCollapsed(!isCollapsed);
@@ -101,6 +101,7 @@ export const AdminPanel = () => {
                     ▼
                   </span>
                 </div>
+                
               </div>
 
               {isOpenDropdown && (
@@ -185,12 +186,13 @@ export const AdminPanel = () => {
                 {!isCollapsed && <p>Brands</p>}
               </li>
             </Link>
-            <Link to="/invoices">
+            <Link to="/transactions">
               <li className={`admin-box ${activeTab === 5 ? "activetab" : ""}`} onClick={() => handleTabClick(4)}>
-                <img src={checkoutimg} alt="Invoices" />
-                {!isCollapsed && <p>Invoices</p>}
+                <img src={checkoutimg} alt="Transactions" />
+                {!isCollapsed && <p>Transactions</p>}
               </li>
             </Link>
+   
 
             <Link to="/settings">
               <li className={`admin-box ${activeTab === 6 ? "activetab" : ""}`} onClick={() => handleTabClick(5)}>

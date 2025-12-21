@@ -8,7 +8,7 @@ footer {
 }
 
 .footer-logo {
-  width: 150px; /* Adjusted for mobile responsiveness */
+  width: 250px; /* Adjusted for mobile responsiveness */
   padding: 10px 0;
 }
 
@@ -20,7 +20,7 @@ footer {
 /* Grid Layout for Footer */
 footer .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* Default 4-column layout */
+  grid-template-columns: repeat(5, 1fr); /* Default 4-column layout */
   gap: 20px;
 }
 
@@ -214,4 +214,102 @@ footer label {
 
 .features-card-content {
   padding: 10px;
+}
+/* WRAPPER */
+.footer-bottom-wrapper {
+  padding: 30px 0;
+  color: #f1f5f9;
+  border-top: 1px solid rgba(50, 13, 13, 0.05);
+}
+
+/* GRID */
+.footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+/* LEFT COLUMN */
+.footer-copy {
+  font-size: 14px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.brand-text {
+  color: #38bdf8;
+}
+
+/* HOTLINE BLOCK */
+.footer-col-center {
+  display: flex;
+  gap: 25px;
+}
+
+.hotline-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hotline-item p {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.hotline-item span {
+  display: block;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* SOCIAL */
+.footer-col-right {
+  text-align: right;
+}
+
+.footer-title {
+  font-size: 14px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.footer-social a img {
+  width: 22px;
+  margin-left: 6px;
+  opacity: 0.9;
+  transition: 0.2s;
+}
+
+.footer-social a img:hover {
+  opacity: 1;
+}
+
+.footer-subtext {
+  font-size: 12px;
+  margin-top: 8px;
+  opacity: 0.7;
+}
+
+/* ---------- MOBILE RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .footer-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-col-center {
+    justify-content: center;
+  }
+
+  .footer-col-right {
+    text-align: center;
+  }
+
+  .footer-social a img {
+    margin: 0 6px;
+  }
 }

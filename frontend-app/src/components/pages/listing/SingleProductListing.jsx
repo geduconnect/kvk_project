@@ -3,10 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 
 import "./DetailsPage.css";
-import { useFilters } from "../../../FilterContext";
-import { FilterPage } from "../FilterPage";
 import { useCart } from "../../../context/CartContext";
 import { useWishlist } from "../../../context/WishlistContext";
+import CategoriesFilter from "../filters/CategoriesPage";
+import { useFilters } from "../../../context/FilterContext";
 
 export const SingleProductListing = () => {
   const { categoryName, productId } = useParams();
@@ -214,34 +214,37 @@ export const SingleProductListing = () => {
                 </div>
 
 
+                {product.description && <p><b>Description:</b> {product.description}</p>}
+                <p><b>Stock:</b> {product.stock > 0 ? `${product.stock} Items In Stock` : "Out of Stock"}</p>
 
                 <div className="product-details-button">
+                  {/* ✅ ADD TO CART */}
                   <button
-                    className="add-to-cart"
-                    onClick={() => addToCart({
-                      id: product.id,
-                      title: product.title,
-                      price: product.discount_price || product.price,
-                      quantity: inputValue,
-                    })}
+                    className="addtocart"
+                    onClick={() => {
+                      addToCart({ ...product, quantity: 1 });
+                      showToast(`${product.name || product.title} added to cart!`);
+                    }}
                   >
-                    Add to Cart
+                    <i className="fa-solid fa-cart-shopping"></i> Add to Cart
                   </button>
 
+                  {/* ✅ ADD TO WISHLIST */}
                   <button
-                    className="add-to-cart"
-                    onClick={() =>
+                    className="addtocart"
+                    onClick={() => {
                       addToWishlist({
-                        id: product.id,
-                        title: product.title,
+                        ...product,
+                        quantity: 1,
                         price: product.discount_price || product.price,
-                      })
-                    }
+                      });
+                      showToast(`${product.title || product.name} added to wishlist!`);
+                    }}
                   >
-                    Wishlist
+                    ❤️ Wishlist
                   </button>
-
                 </div>
+
               </div>
             </div>
 
@@ -340,13 +343,9 @@ export const SingleProductListing = () => {
         </div>
         {/* Right Column: Filter Sidebar */}
         <div className="categories-sidebar">
-          <FilterPage
+          <CategoriesFilter
             categories={categories}
             products={products}
-            brands={brands}
-            stockSummary={stockSummary}
-            isFilterVisible={isFilterVisible}
-            setIsFilterVisible={setIsFilterVisible}
           />
         </div>
       </div>

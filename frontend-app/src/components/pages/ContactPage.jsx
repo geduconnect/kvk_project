@@ -27,15 +27,15 @@ export const ContactPage = () => {
         <div className="contact-details">
           <div className="detail">
             <h3>Address</h3>
-            <p>5171 W Campbell Ave, Kent, Utah 53127, United States</p>
+            <p>Chandwa, Latehar, Jharkhand</p>
           </div>
           <div className="detail">
             <h3>Phone</h3>
-            <p>(+91) - 540-025-124553</p>
+            <p>+91 930 -827-0123</p>
           </div>
           <div className="detail">
             <h3>Email</h3>
-            <p>sale@Nest.com</p>
+            <p>krishivikashkendra@gmail.com</p>
           </div>
           <div className="detail">
             <h3>Working Hours</h3>

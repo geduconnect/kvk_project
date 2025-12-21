@@ -2,9 +2,29 @@ import React, { useState, useContext, useEffect } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
+
 import { ProductContext } from "../../context/ProductContext.jsx";
 import "./UploadProduct.css";
+const quillModules = {
+  toolbar: [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    ["link"],
+    ["clean"],
+  ],
+};
 
+const quillFormats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "link",
+];
 export const UploadProduct = () => {
   const { triggerRefresh } = useContext(ProductContext);
 

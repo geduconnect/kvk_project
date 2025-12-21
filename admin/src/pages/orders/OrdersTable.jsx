@@ -21,8 +21,8 @@ export const OrdersTable = () => {
       setLoading(true);
       try {
         const url = customerId
-          ? `/admin/orders/customer/${customerId}`
-          : `/admin/orders`;
+          ? `/orders/customer/${customerId}`
+          : `/orders`;
         const { data } = await api.get(url);
 
         const formatted = Array.isArray(data)

@@ -2,8 +2,8 @@ import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
 const AdminPrivateRoute = () => {
-  const token = localStorage.getItem("token");
-  const admin = JSON.parse(localStorage.getItem("admin"));
+  // const token = localStorage.getItem("token");
+  // const admin = JSON.parse(localStorage.getItem("admin"));
 
   if (!token || !admin || admin.role !== "admin") {
     return <Navigate to="/admin/login" replace />;

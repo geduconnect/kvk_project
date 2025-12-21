@@ -59,7 +59,7 @@ export const FeaturedCategories = ({ featuredcategory }) => {
             {/* Product Details */}
             <div className="product-contentcard">
               <span className="catName">{featuredcategory.name}</span>
-              <h2 className="products-name">{product.title || product.name}</h2>
+             <h2 className="ddproducts-name">{product.title || product.name}</h2>
               <h4>{product.brand}</h4>
               <h5>
                 Stock:{" "}

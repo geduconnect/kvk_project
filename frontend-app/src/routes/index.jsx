@@ -32,6 +32,11 @@ import { CustomerSignup } from "../components/auth/CustomerSignup";
 import { CustomerProfile } from "../components/auth/CustomerProfile";
 import { CustomerLogin } from "../components/auth/CustomerLogin.jsx";
 import { CustomerProtectedRoute } from "./PrivateRoute.jsx";
+import CategoriesPage from "../components/pages/filters/CategoriesPage.jsx";
+import PriceFilterPage from "../components/pages/filters/PriceFilterPage.jsx";
+import BrandFilterPage from "../components/pages/filters/BrandFilterPage.jsx";
+import StockFilterPage from "../components/pages/filters/StockFilterPage.jsx";
+import SearchResults from "../components/Header/SearchResults.jsx";
 
 // Protected Route
 
@@ -60,15 +65,50 @@ const router = createBrowserRouter([
       // Product Routes
       { path: "all-categories", element: <AllCategoriesProducts /> },
       { path: "products-categories/:categoryName", element: <ProductListing /> },
+      {
+        path: "filter/categories/:categoryName",
+        element: <CategoriesPage />,
+      },
+      {
+        path: "filter/price/:categoryName",
+        element: <PriceFilterPage />,
+      },
+      {
+        path: "filter/brand/:categoryName",
+        element: <BrandFilterPage />,
+      },
+      {
+        path: "filter/stock/:categoryName",
+        element: <StockFilterPage />,
+      },
       { path: "products-categories/:categoryName/:productId", element: <SingleProductListing /> },
 
       // User Routes
-      { path: "wishlist", element: <Wishlist /> },
-      { path: "settings", element: <Settings /> },
+      {
+        path: "wishlist",
+        element: (
+          <CustomerProtectedRoute>
+            <Wishlist />
+          </CustomerProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <CustomerProtectedRoute>
+            <Settings />
+          </CustomerProtectedRoute>
+        ),
+      },
 
-      // Auth
+      // ✅ Auth Routes
       { path: "login", element: <CustomerLogin /> },
       { path: "signup", element: <CustomerSignup /> },
+      {
+        path: "search",
+        element: <SearchResults />,
+      },
+      // ✅ Protected Customer Pages
       {
         path: "profile",
         element: (
@@ -102,8 +142,15 @@ const router = createBrowserRouter([
         ),
       },
 
-      // Checkout, Invoice, Brands
-      { path: "invoice", element: <Invoice /> },
+      // ✅ Misc
+      {
+        path: "invoice",
+        element: (
+          <CustomerProtectedRoute>
+            <Invoice />
+          </CustomerProtectedRoute>
+        ),
+      },
       { path: "brands", element: <BrandsPage /> },
       { path: "affiliations", element: <Affiliations /> },
     ],

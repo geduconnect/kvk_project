@@ -30,9 +30,9 @@ export const ProductCategory = () => {
     <div className="category-section">
       <div className="categories-title">
         <h2 className="">Our Categories</h2>
+        <div className="line-mf"></div>
 
       </div>
-      <div className="line-mf"></div>
 
       <div className="categories-wrapper">
         {categories.length > 0 ? (
@@ -41,7 +41,7 @@ export const ProductCategory = () => {
               <Link to={`/products-categories/${cat.name}`}>
                 <div className="category-image">
                   <img src={cat.image} alt={cat.name} />
-                  <p>{cat.name}</p>
+                  <p className="category-name">{cat.name}</p>
                 </div>
               </Link>
             </div>

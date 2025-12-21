@@ -14,38 +14,34 @@ export const DailyDealsCard = ({
   const { addToCart } = useCart();
   const { addToWishlist } = useWishlist();
 
-  // Simple alert (replace with fancier notification if needed)
-  const showAlert = (msg) => {
-    const alertBox = document.createElement("div");
-    alertBox.className = "notification success";
-    alertBox.innerText = msg;
-    document.body.appendChild(alertBox);
+  // ✅ Same behavior as FeaturedCategories
+  const showToast = (msg) => alert(msg);
 
-    setTimeout(() => {
-      alertBox.remove();
-    }, 2000);
-  };
+  if (!ddproduct) return null;
+
+  const productLink = `/products-categories/${ddproduct.category_name || "unknown"
+    }/${ddproduct.id}`;
 
   return (
     <div className="product-card">
       <span className="product-badge">Hot</span>
 
+      {/* ✅ PRODUCT IMAGE */}
       <div className="product-imgcard">
         {ddproduct.images && ddproduct.images[0] ? (
           <img
             className="product-image"
-            src={`http://localhost:8000${ddproduct.images[0]}`}
-            alt={ddproduct.name || ddproduct.title}
+            src={`http://localhost:8000${ddproduct.images}`}
+            alt={ddproduct.title || ddproduct.name}
           />
         ) : (
           <span>No Image</span>
         )}
 
+        {/* ✅ PREVIEW */}
         <div className="img_overlay">
           <ul className="list-product-overlay">
-            <Link
-              to={`/products-categories/${ddproduct.category_name}/${ddproduct.id}`}
-            >
+            <Link to={productLink}>
               <li className="list-item-overlay">
                 <img src={previewimg} alt="Preview" />
               </li>
@@ -53,26 +49,32 @@ export const DailyDealsCard = ({
           </ul>
         </div>
 
-        {/* ❤️ Wishlist */}
+        {/* ✅ WISHLIST (MATCHED WITH FEATURED) */}
         <div
           className="wishlist-icon"
           onClick={() => {
             addToWishlist({ ...ddproduct, quantity: 1 });
-            showAlert(`${ddproduct.title || ddproduct.name} added to wishlist!`);
+            showToast(
+              `${ddproduct.title || ddproduct.name} added to wishlist!`
+            );
           }}
         >
           <img src={wishlistimg} alt="Wishlist" />
         </div>
       </div>
 
+      {/* ✅ PRODUCT DETAILS */}
       <div className="ddproduct-contentcard">
         <span className="catName">{ddproduct.category_name}</span>
-        <Link
-          to={`/products-categories/${ddproduct.category_name}/${ddproduct.id}`}
-        >
-          <h2 className="ddproducts-name">{ddproduct.title}</h2>
+
+        <Link to={productLink}>
+          <h2 className="ddproducts-name">
+            {ddproduct.title || ddproduct.name}
+          </h2>
         </Link>
+
         <h4>{ddproduct.brand}</h4>
+
         <h5>
           Stock:{" "}
           {ddproduct.stock > 0
@@ -80,6 +82,7 @@ export const DailyDealsCard = ({
             : "Out of Stock"}
         </h5>
 
+        {/* ✅ RATINGS */}
         <div className="product-ratings">
           <span className="fa fa-star checked"></span>
           <span className="fa fa-star checked"></span>
@@ -88,26 +91,32 @@ export const DailyDealsCard = ({
           <span className="fa fa-star"></span>
         </div>
 
+        {/* ✅ PRICE */}
         <div className="price">
-          <span className="original-price">
-            ₹{ddproduct.orgprice || ddproduct.price}
-          </span>
+          {ddproduct.orgprice && (
+            <span className="original-price">₹{ddproduct.orgprice}</span>
+          )}
           <span className="discount-price">
             ₹{ddproduct.daily_deal_price || ddproduct.price}
           </span>
         </div>
 
-        {/* 🛒 Add to Cart */}
+        {/* ✅ ADD TO CART (MATCHED WITH FEATURED) */}
         <button
           className="addtocart"
+          disabled={ddproduct.stock <= 0}
           onClick={() => {
             addToCart({ ...ddproduct, quantity: 1 });
-            showAlert(`${ddproduct.title || ddproduct.name} added to cart!`);
+            showToast(
+              `${ddproduct.title || ddproduct.name} added to cart!`
+            );
           }}
         >
-          <i className="fa-solid fa-cart-shopping"></i> Add to Cart
+          <i className="fa-solid fa-cart-shopping"></i>{" "}
+          {ddproduct.stock > 0 ? "Add to Cart" : "Out of Stock"}
         </button>
 
+        {/* ✅ ADMIN DAILY DEAL CONTROL */}
         {isAdmin && (
           <div style={{ marginTop: "10px" }}>
             <input

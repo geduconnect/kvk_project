@@ -4,13 +4,18 @@ import axios from "axios";
 import { HomeProduct } from "./HomeProduct";
 
 import "./Listing.css";
-import { useFilters } from "../../../FilterContext";
 import { FilterPage } from "../FilterPage";
 import { useWishlist } from "../../../context/WishlistContext";
+import CategoriesPage from "../filters/CategoriesPage";
+import PriceFilterPage from "../filters/PriceFilterPage";
+import BrandFilterPage from "../filters/BrandFilterPage";
+import StockFilterPage from "../filters/StockFilterPage";
+import { useFilters } from "../../../context/FilterContext";
 
 export const ProductListing = () => {
   const { categoryName } = useParams();
   const { addToWishlist } = useWishlist();
+
   const {
     minPrice,
     setMinPrice,
@@ -33,7 +38,8 @@ export const ProductListing = () => {
   const [brands, setBrands] = useState([]);
   const [stockSummary, setStockSummary] = useState({ inStock: 0, outStock: 0 });
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
+  const [isOpenDropdown, setIsOpenDropdown] = useState(false);
+  const [isOpenDropdown2, setIsOpenDropdown2] = useState(false);
   // --- Fetch categories ---
   useEffect(() => {
     axios
@@ -52,16 +58,16 @@ export const ProductListing = () => {
 
   // --- Fetch brands + stock for current category ---
   useEffect(() => {
-  if (!categoryName) return; // skip if undefined
+    if (!categoryName) return; // skip if undefined
 
-  axios.get(`http://localhost:8000/api/brands/${categoryName}`)
-    .then(res => setBrands(res.data))
-    .catch(err => console.error("Brands fetch error:", err));
+    axios.get(`http://localhost:8000/api/brands/${categoryName}`)
+      .then(res => setBrands(res.data))
+      .catch(err => console.error("Brands fetch error:", err));
 
-  axios.get(`http://localhost:8000/api/stock/${categoryName}`)
-    .then(res => setStockSummary(res.data))
-    .catch(err => console.error("Stock fetch error:", err));
-}, [categoryName]);
+    axios.get(`http://localhost:8000/api/stock/${categoryName}`)
+      .then(res => setStockSummary(res.data))
+      .catch(err => console.error("Stock fetch error:", err));
+  }, [categoryName]);
 
   // --- Filter & sort products ---
   useEffect(() => {
@@ -108,16 +114,39 @@ export const ProductListing = () => {
       </div>
 
       <div className="listing-data">
-        {/* Sidebar / Filters */}
-        <FilterPage
-          categories={categories}
-          products={products}
-          brands={brands}
-          stockSummary={stockSummary}
-          isFilterVisible={isFilterVisible}
-          setIsFilterVisible={setIsFilterVisible}
-        />
+        <div className="listing-wrapper">
+          {/* Sidebar / Filters */}
+          <CategoriesPage
+            categories={categories}
+            products={products}
+          />
 
+          <PriceFilterPage
+            minPrice={minPrice}
+            maxPrice={maxPrice}
+            setMinPrice={setMinPrice}
+            setMaxPrice={setMaxPrice}
+          />
+
+          <BrandFilterPage
+            brands={brands}
+            selectedBrands={selectedBrands}
+            setSelectedBrands={setSelectedBrands}
+          />
+
+          <StockFilterPage
+            selectedStock={selectedStock}
+            setSelectedStock={setSelectedStock}
+            stockSummary={stockSummary}
+          />
+
+          <div className="sidebar-category-card">
+            <button onClick={() => setIsFilterVisible(!isFilterVisible)}>
+              {isFilterVisible ? "Hide Filters" : "Show Filters"}
+            </button>
+            {isFilterVisible && <button onClick={clearFilters}>Clear All Filters</button>}
+          </div>
+        </div>
         {/* Product Grid */}
         <HomeProduct
           products={filteredProducts}
@@ -128,6 +157,10 @@ export const ProductListing = () => {
           setItemsPerPage={setItemsPerPage}
           sortOption={sortOption}
           setSortOption={setSortOption}
+          isOpenDropdown2={isOpenDropdown2}
+          setIsOpenDropdown2={setIsOpenDropdown2}
+          isOpenDropdown={isOpenDropdown}
+          setIsOpenDropdown={setIsOpenDropdown}
         />
       </div>
     </div>

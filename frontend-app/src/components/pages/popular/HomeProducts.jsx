@@ -13,7 +13,7 @@ export const HomeProducts = () => {
   useEffect(() => {
     const fetchPopularProducts = async () => {
       try {
-  const res = await axios.get("http://localhost:8000/api/products/popular/by-category");
+        const res = await axios.get("http://localhost:8000/api/products/popular/by-category");
         setPopularCategories(res.data);
         setLoading(false);
       } catch (err) {
@@ -28,19 +28,19 @@ export const HomeProducts = () => {
   if (!popularCategories.length) return <p>No popular products found.</p>;
 
   return (
-    <div className="daily-deals">
-      <div
-        className="section-title"
+    <div className="daily-deals" style={{background: "#f5f2edff"}}>
 
-      >
-        <h2>Popular Products</h2>
-        <Link to="/featured-category"
-          className="view-all-btn">
-          View All
-        </Link>
-      </div>
       <div className="dailydeals-container">
+        <div
+          className="section-title"
 
+        >
+          <h2>Popular Products</h2>
+          <Link to="/featured-category"
+            className="view-all-btn">
+            View All
+          </Link>
+        </div>
         {/* Category Tabs */}
 
         <div className="dailydealstab-header">

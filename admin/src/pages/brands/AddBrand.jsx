@@ -14,36 +14,16 @@ export const AddBrand = () => {
 
   const handleAddBrand = async (e) => {
     e.preventDefault();
-    setError("");
 
-    if (!brandName.trim()) {
-      setError("Brand name is required.");
-      return;
-    }
+    const formData = new FormData();
+    formData.append("brand_name", brandName);
+    formData.append("image", brandImage);
 
-    if (!brandImage) {
-      setError("Brand image is required.");
-      return;
-    }
-
-    try {
-      const formData = new FormData();
-      formData.append("brand_name", brandName);
-      formData.append("image", brandImage); 
-
-      await axios.post("/brandsTable", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
-      navigate("/brandsTable");
-    } catch (err) {
-      console.error("❌ Error adding brand:", err);
-
-      setError(
-        err.response?.data?.error || "Failed to add brand."
-      );
-    }
+    await axios.post("/brands", formData, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
   };
+
 
   return (
     <div className="user-details-page">
@@ -60,12 +40,12 @@ export const AddBrand = () => {
         />
 
         <label>Brand Image</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setBrandImage(e.target.files[0])}
-          required
-        />
+      <input
+  type="file"
+  name="image"
+  onChange={(e) => setBrandImage(e.target.files[0])}
+/>
+
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 

@@ -16,14 +16,13 @@ export const AddOrder = () => {
 
   const [form, setForm] = useState({
     customerId: prefillCustomerId || "",
-    date: "",
     totalCost: 0,
     status: "Pending",
     paymentMethod: "",
-    paymentStatus: "",
+    paymentStatus: "Pending",
     remarks: "",
     items: [
-      { productId: "", quantity: 1, description: "", amount: 0 }
+      { productId: "", quantity: 1, description: "", amount: 0 },
     ],
   });
 
@@ -46,7 +45,7 @@ export const AddOrder = () => {
         setCustomers(customerData);
         setProducts(productRes.data || []);
       } catch (err) {
-        console.error("Failed to fetch dropdown data:", err);
+        console.error("❌ Failed to fetch dropdown data:", err);
       }
     };
 
@@ -57,7 +56,7 @@ export const AddOrder = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ ITEM CHANGE HANDLER (product + quantity)
+  // ✅ PRODUCT & QUANTITY HANDLER
   const handleItemChange = (idx, e) => {
     const { name, value } = e.target;
     const updatedItems = [...form.items];
@@ -67,7 +66,7 @@ export const AddOrder = () => {
         (p) => p.id === parseInt(value, 10)
       );
 
-      const price = selectedProduct?.price || 0;
+      const price = Number(selectedProduct?.price || 0);
       const qty = Number(updatedItems[idx].quantity || 1);
 
       updatedItems[idx] = {
@@ -76,13 +75,17 @@ export const AddOrder = () => {
         description: selectedProduct?.title || "",
         amount: price * qty,
       };
-    } else if (name === "quantity") {
-      const qty = Number(value || 0);
+    }
+
+    if (name === "quantity") {
+      const qty = Number(value || 1);
       const currentProductId = updatedItems[idx].productId;
+
       const selectedProduct = products.find(
         (p) => p.id === parseInt(currentProductId, 10)
       );
-      const price = selectedProduct?.price || 0;
+
+      const price = Number(selectedProduct?.price || 0);
 
       updatedItems[idx] = {
         ...updatedItems[idx],
@@ -115,6 +118,7 @@ export const AddOrder = () => {
 
   const removeItem = (idx) => {
     const remainingItems = form.items.filter((_, i) => i !== idx);
+
     const updatedTotal = remainingItems.reduce(
       (sum, item) => sum + Number(item.amount || 0),
       0
@@ -127,6 +131,7 @@ export const AddOrder = () => {
     });
   };
 
+  // ✅ SUBMIT ORDER
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -150,6 +155,7 @@ export const AddOrder = () => {
         setLoading(false);
         return;
       }
+
       if (!item.quantity || item.quantity <= 0) {
         setError("❌ Quantity must be at least 1");
         setLoading(false);
@@ -163,10 +169,10 @@ export const AddOrder = () => {
         totalCost: Number(form.totalCost),
         status: form.status,
         paymentMethod: form.paymentMethod || null,
-        paymentStatus: form.paymentStatus || null,
+        paymentStatus: form.paymentStatus || "Pending",
         remarks: form.remarks || "",
         items: form.items.map((item) => ({
-          productId: parseInt(item.productId, 10),
+          productId: Number(item.productId),
           quantity: Number(item.quantity || 1),
           description: item.description,
           amount: Number(item.amount),
@@ -175,10 +181,9 @@ export const AddOrder = () => {
 
       console.log("✅ FINAL PAYLOAD SENDING:", payload);
 
-      // ⬅️ IMPORTANT: this MUST match how you mounted the router in backend
-      await axios.post("/admin/orders", payload);
+      const res = await axios.post("/orders", payload);
 
-      alert("✅ Order created successfully!");
+      alert(res.data?.message || "✅ Order created successfully!");
 
       navigate(
         prefillCustomerId
@@ -186,11 +191,12 @@ export const AddOrder = () => {
           : "/allorders"
       );
     } catch (err) {
-      console.error("SUBMIT ERROR FULL:", err);
+      console.error("❌ SUBMIT ERROR FULL:", err);
+
       setError(
         err.response?.data?.message ||
-          err.response?.data?.error ||
-          "❌ Failed to create order"
+        err.response?.data?.error ||
+        "❌ Failed to create order"
       );
     } finally {
       setLoading(false);
@@ -200,6 +206,7 @@ export const AddOrder = () => {
   return (
     <div className="add-order-container">
       <h2>Add Order</h2>
+
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -223,16 +230,6 @@ export const AddOrder = () => {
         </div>
 
         <div>
-          <label>Date</label>
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div>
           <label>Total Cost</label>
           <input type="number" value={form.totalCost} readOnly />
         </div>
@@ -244,11 +241,17 @@ export const AddOrder = () => {
             value={form.status}
             onChange={handleChange}
           >
-            {["Pending", "Processing", "Completed", "Cancelled"].map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
+            {["Pending",
+              "Processing",
+              "Shipped",
+              "Delivered",
+              "Cancelled"].map(
+                (s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                )
+              )}
           </select>
         </div>
 
@@ -274,10 +277,10 @@ export const AddOrder = () => {
             value={form.paymentStatus}
             onChange={handleChange}
           >
-            <option value="">Select</option>
             <option value="Pending">Pending</option>
             <option value="Paid">Paid</option>
             <option value="Failed">Failed</option>
+            <option value="Refunded">Refunded</option>
           </select>
         </div>
 
@@ -294,7 +297,6 @@ export const AddOrder = () => {
 
         {form.items.map((item, idx) => (
           <div key={idx} style={{ display: "flex", gap: "6px" }}>
-            {/* PRODUCT DROPDOWN */}
             <select
               name="productId"
               value={item.productId}
@@ -309,7 +311,6 @@ export const AddOrder = () => {
               ))}
             </select>
 
-            {/* QUANTITY */}
             <input
               type="number"
               name="quantity"
@@ -319,19 +320,15 @@ export const AddOrder = () => {
               style={{ width: "80px" }}
             />
 
-            {/* DESCRIPTION (AUTO-FILLED) */}
             <input
               type="text"
-              name="description"
               value={item.description}
               readOnly
               style={{ flex: 1 }}
             />
 
-            {/* AMOUNT (AUTO-CALCULATED) */}
             <input
               type="number"
-              name="amount"
               value={item.amount}
               readOnly
               style={{ width: "120px" }}

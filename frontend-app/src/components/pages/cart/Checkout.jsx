@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../components/api";
 import { useCart } from "../../../context/CartContext";
+import { useCustomerAuth } from "../../../context/CustomerContext";
 import "./cart.css";
 
 export const Checkout = () => {
+
   const navigate = useNavigate();
   const { cartItems, clearCart } = useCart();
-  const userId = user?.id;
+  const { customer } = useCustomerAuth();
+  const customerId = customer?.id;
 
   const [orderId, setOrderId] = useState(null);
-  const [couponCode, setCouponCode] = useState("");
-  const [appliedCoupon, setAppliedCoupon] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [billingInfo, setBillingInfo] = useState({
     fname: "",
@@ -24,226 +25,186 @@ export const Checkout = () => {
     additionalInfo: "",
   });
 
-  // Handle billing input
+  // ✅ Billing handler
   const handleBillingChange = (e) => {
     const { name, value } = e.target;
     setBillingInfo((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Apply coupon (10% off)
-  const handleApplyCoupon = (e) => {
-    e.preventDefault();
-    if (couponCode.trim() === "") return;
-    setAppliedCoupon(true);
-  };
+  // ✅ Calculate total
+  const totalCost = cartItems.reduce(
+    (acc, item) => acc + Number(item.price) * item.quantity,
+    0
+  );
 
-  // Total calculation
-  const calculateTotal = () =>
-    cartItems.reduce(
-      (acc, item) => acc + (item.price || 0) * (item.quantity || 1),
-      0
-    );
-
-  const totalAmount = appliedCoupon ? calculateTotal() * 0.9 : calculateTotal();
-
-  // Place order
+  // ✅ PLACE ORDER
   const handlePlaceOrder = async () => {
-    if (!billingInfo.fname || !billingInfo.lname || !billingInfo.address) {
-      alert("Please fill all required fields");
-      return;
-    }
-
-    if (!cartItems.length) {
-      alert("Your cart is empty");
-      return;
-    }
+    if (!customerId) return alert("Please login first");
+    if (!billingInfo.fname || !billingInfo.lname || !billingInfo.address)
+      return alert("Please fill required billing details");
+    if (!cartItems.length) return alert("Your cart is empty");
 
     try {
-      const orderData = {
+      const items = cartItems.map((item) => ({
+        productId: item.productId,
+        quantity: item.quantity,
+        description: item.title,
+        amount: Number(item.price) * item.quantity,
+      }));
+
+      const payload = {
+        customerId,
+        totalCost,
+        status: "Pending",
         paymentMethod,
-        billingInfo,
+        paymentStatus: paymentMethod === "cod" ? "Unpaid" : "Paid",
+        remarks: billingInfo.additionalInfo || "",
+        items,
       };
 
-      // ✅ Use your backend’s placeOrderFromCart route
-      const res = await axios.post(
-        `http://localhost:8000/api/orders/place/${userId}`,
-        orderData
-      );
-
-      if (!res.data.orderId) {
-        alert("Order ID not generated, please try again.");
-        return;
-      }
-
+      const res = await api.post("/orders", payload);
       const newOrderId = res.data.orderId;
+
       setOrderId(newOrderId);
       clearCart();
 
-      alert(`✅ Order placed successfully! Your Order ID: ${newOrderId}`);
+      alert(`✅ Order placed successfully! Order ID: ${newOrderId}`);
+      navigate("/trackmyorder", { state: { orderId: newOrderId } });
     } catch (err) {
       console.error("❌ Checkout failed:", err);
-      alert("Failed to place order. Please try again.");
+      alert("Order placement failed. Please try again.");
     }
   };
-
+  useEffect(() => {
+    if (customer) {
+      setBillingInfo((prev) => ({
+        ...prev,
+        fname: customer.name?.split(" ")[0] || "",
+        lname: customer.name?.split(" ")[1] || "",
+        mobile: customer.mobile || "",
+        email: customer.email || "",
+        address: customer.address || "",
+        state: customer.state || "",
+        city: customer.city || "",
+        pincode: customer.pincode || "",
+      }));
+    }
+  }, [customer]);
   return (
     <div className="checkout-container">
-      {/* Header */}
-      <div className="checkout-row">
-        <div className="col-lg-8 mb-40">
-          <h1 className="heading-2">Checkout</h1>
-          <h6 className="text-body">
-            There are{" "}
-            <span className="text-brand">{cartItems.length}</span> products in
-            your cart
-          </h6>
-        </div>
-      </div>
+      <h1>Checkout</h1>
 
       <div className="checkout-row">
-        {/* Billing */}
+        {/* ✅ BILLING */}
         <div className="col-lg-7">
-          <h4 className="mb-30">Billing Details</h4>
-          <form className="checkout-form">
-            {[
-              "fname",
-              "lname",
-              "mobile",
-              "email",
-              "address",
-              "city",
-              "pincode",
-              "additionalInfo",
-            ].map((field) => (
-              <div className="form-group col-lg-6" key={field}>
-                {field === "address" || field === "additionalInfo" ? (
-                  <textarea
-                    name={field}
-                    rows={field === "additionalInfo" ? 5 : 2}
-                    placeholder={
-                      field === "additionalInfo"
-                        ? "Additional information"
-                        : "Address"
-                    }
-                    value={billingInfo[field]}
-                    onChange={handleBillingChange}
-                  />
-                ) : (
-                  <input
-                    type={field === "email" ? "email" : "text"}
-                    name={field}
-                    placeholder={
-                      field.charAt(0).toUpperCase() + field.slice(1)
-                    }
-                    value={billingInfo[field]}
-                    onChange={handleBillingChange}
-                    required={["fname", "lname", "address"].includes(field)}
-                  />
-                )}
-              </div>
-            ))}
-          </form>
+          <h4>Billing Details</h4>
+
+          {[
+            "fname",
+            "lname",
+            "mobile",
+            "email",
+            "address",
+            "state",
+            "city",
+            "pincode",
+            "additionalInfo",
+          ].map((field) => (
+            <input
+              key={field}
+              name={field}
+              value={billingInfo[field]}
+              onChange={handleBillingChange}
+              placeholder={field.toUpperCase()}
+            />
+          ))}
         </div>
 
-        {/* Order Summary */}
-        <div className="col-lg-5">
-          <div className="cart-totals">
-            <h4>Your Order</h4>
-            <div className="divider-2 mb-30"></div>
-            <div className="table-responsive order_table checkout">
-              <table className="table no-border">
-                <tbody>
-                  {cartItems.map((item, index) => (
-                    <tr key={index}>
-                      <td className="image product-thumbnail">
-                        <img
-                          src={`http://localhost:8000${item.images?.[0]}`}
-                          alt={item.name}
-                        />
-                      </td>
-                      <td>
-                        <h6 className="w-160 mb-5">{item.name}</h6>
-                      </td>
-                      <td>
-                        <h6 className="text-muted pl-20 pr-20">
-                          x {item.quantity}
-                        </h6>
-                      </td>
-                      <td>
-                        <h4 className="text-brand">
-                          ${(item.price * item.quantity).toFixed(2)}
-                        </h4>
-                      </td>
-                    </tr>
-                  ))}
-                  <tr>
-                    <td colSpan="3" className="text-end">
-                      <strong>Total:</strong>
-                    </td>
-                    <td>
-                      <h4 className="text-brand">${totalAmount.toFixed(2)}</h4>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+        {/* ✅ ORDER SUMMARY (WITH IMAGE) */}
+        <div className="cart-summary">
+          <h3>Your Order</h3>
 
-          {/* Payment */}
-          <div className="payment ml-30">
-            <h4 className="mb-30">Payment</h4>
-            <div className="payment_option">
-              {["bank", "cod", "paypal"].map((method) => (
-                <div className="custome-radio" key={method}>
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="payment_option"
-                    value={method}
-                    checked={paymentMethod === method}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
-                    id={`payment_${method}`}
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor={`payment_${method}`}
-                  >
-                    {method === "bank"
-                      ? "Direct Bank Transfer"
-                      : method === "cod"
-                      ? "Cash on Delivery"
-                      : "Online Payment Gateway"}
-                  </label>
+          {cartItems.map((item) => {
+            const imageUrl =
+              item.images?.length > 0
+                ? `http://localhost:8000${item.images[0]}`
+                : item.image
+                  ? `http://localhost:8000${item.image}`
+                  : null;
+
+            return (
+              <div key={item.productId} className="summary-row">
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div className="img-box">
+                    {imageUrl ? <img src={imageUrl} alt={item.title} /> : "No Image"}
+                  </div>
+                  <span>
+                    {item.title} × {item.quantity}
+                  </span>
                 </div>
-              ))}
-            </div>
 
-            <button
-              className="btn btn-place-order btn-block"
-              onClick={handlePlaceOrder}
-            >
-              Place Order
-            </button>
+                <span>₹{(item.price * item.quantity).toFixed(2)}</span>
+              </div>
+            );
+          })}
+
+          <div className="divider-2"></div>
+
+          <div className="summary-row">
+            <span>Subtotal</span>
+            <span>₹{totalCost.toFixed(2)}</span>
           </div>
+
+          <div className="summary-row">
+            <span>Shipping</span>
+            <span className="free-text">Free</span>
+          </div>
+
+          <div className="summary-row">
+            <span>Estimate For</span>
+            <span>India</span>
+          </div>
+
+          <div className="divider-2"></div>
+
+          <div className="summary-total">
+            <strong>Total</strong>
+            <strong>₹{totalCost.toFixed(2)}</strong>
+          </div>
+
+          {/* ✅ PAYMENT */}
+          <div style={{ marginTop: "12px" }}>
+            <label>
+              <input
+                type="radio"
+                value="cod"
+                checked={paymentMethod === "cod"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              Cash on Delivery
+            </label>
+
+            <label style={{ marginLeft: "12px" }}>
+              <input
+                type="radio"
+                value="online"
+                checked={paymentMethod === "online"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+              Online Payment
+            </label>
+          </div>
+
+          <button className="btn-place-order" onClick={handlePlaceOrder}>
+            Place Order
+          </button>
         </div>
       </div>
-
-      {appliedCoupon && (
-        <p className="text-success mt-10">Coupon applied! 10% discount</p>
-      )}
 
       {orderId && (
-        <div className="order-confirmation mt-20 p-20 border rounded">
-          <h4 className="text-success">Order Placed Successfully!</h4>
-          <p>
-            Your Order ID is: <strong>{orderId}</strong>
-          </p>
-          <button
-            className="btn btn-primary mt-10"
-            onClick={() => navigate("/trackmyorder", { state: { orderId } })}
-          >
-            Track Your Order
-          </button>
+        <div style={{ marginTop: 20 }}>
+          <h3>✅ Order Placed Successfully</h3>
+          <p>Order ID: {orderId}</p>
         </div>
       )}
     </div>

@@ -1,5 +1,8 @@
 // src/components/auth/CustomerSignup.jsx
 import React, { useState } from "react";
+import "./Login.css";
+import loginIcons from "../../assets/img/signin.gif";
+import iconpass from "../../assets/img/eyeicon.jpg";
 import { useNavigate, Link } from "react-router-dom";
 
 export const CustomerSignup = () => {
@@ -34,24 +37,45 @@ export const CustomerSignup = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Customer Signup</h2>
-      <form onSubmit={handleSubmit} className="auth-form">
-        <input name="name" placeholder="Name" onChange={handleChange} required />
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-        <input name="mobile" placeholder="Mobile" onChange={handleChange} />
-        <input name="address" placeholder="Address" onChange={handleChange} />
-        <input name="city" placeholder="City" onChange={handleChange} />
-        <input name="state" placeholder="State" onChange={handleChange} />
-        <input name="pincode" placeholder="Pincode" onChange={handleChange} />
-        {error && <p className="error">{error}</p>}
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h2>Customer Signup</h2>
+
+        <div className="login-icon">
+          <img src={loginIcons} alt="login icon" />
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+        <div className="txtb">
+          <input name="name" placeholder="Name" onChange={handleChange} required /></div>
+        <div className="txtb">
+          <input name="email" type="email" placeholder="Email" onChange={handleChange} required /></div>
+        <div className="text-pass">
+          <span className="txtb-pass">
+            <input name="password" type="password" placeholder="Password" onChange={handleChange} required /> <span
+              className="toggle-pass"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              <img src={iconpass} alt="toggle visibility" />
+            </span>
+          </span>
+        </div>
+        <div className="txtb">
+          <input name="mobile" placeholder="Mobile" onChange={handleChange} /></div>
+        <div className="txtb">
+          <input name="address" placeholder="Address" onChange={handleChange} /></div>
+        <div className="txtb">
+          <input name="city" placeholder="City" onChange={handleChange} /></div>
+        <div className="txtb">
+          <input name="state" placeholder="State" onChange={handleChange} /></div>
+        <div className="txtb">
+          <input name="pincode" placeholder="Pincode" onChange={handleChange} /></div>
         {success && <p className="success">{success}</p>}
-        <button type="submit">Sign Up</button>
+        <button className="logbtn" type="submit">Sign Up</button>
         <p>
           Already have an account? <Link to="/login">Login</Link>
         </p>
-      </form>
-    </div>
+      </form >
+    </div >
   );
 };

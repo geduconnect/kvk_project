@@ -12,7 +12,6 @@ import { UploadProduct } from "../pages/products/UploadProduct";
 import { SignUp } from "../pages/SignUp";
 import { ProductTable } from "../pages/products/ProductTable";
 import { ProductManagement } from '../pages/products/ProductManagement';
-import { Invoice } from '../pages/invoice/Invoice';
 import { OrderManagement } from '../pages/orders/OrderManagement';
 import { OrderDetails } from '../pages/orders/OrdersDetails';
 import { OrdersTable } from '../pages/orders/OrdersTable';
@@ -42,6 +41,8 @@ import { AddBrand } from '../pages/brands/AddBrand';
 import { EditBrand } from '../pages/brands/EditBrand';
 import { BrandManagement } from '../pages/brands/BrandManagement';
 import AdminProtectedRoute from './PrivateRoute';
+import { Transactions } from '../pages/invoice/Transactions';
+import { Invoice } from '../pages/invoice/Invoice';
 
 const router = createBrowserRouter([
   {
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
             children: [
               { path: "customerTable", element: <CustomerTable /> },
               { path: ":id", element: <CustomerDetails /> },
-      { path: "customer/:customerId/orders", element: <OrdersTable /> },
+              { path: "customer/:customerId/orders", element: <OrdersTable /> },
               { path: "customer/:customerId/orders/:orderId/details", element: <OrderDetails /> },
             ],
           },
@@ -123,8 +124,12 @@ const router = createBrowserRouter([
             element: <PopularProductsTable />,
           },
           {
-            path: "invoices",
+            path: "invoices/:id",
             element: <Invoice />,
+          },
+          {
+            path: "transactions",
+            element: <Transactions />,
           },
           {
             path: "settings",
@@ -146,10 +151,10 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "/myAccount",
+        path: "/account",
         element:
           <AdminProtectedRoute roles={["customer", "admin"]}>
-            <h2>My Profile Page</h2>
+           <MyAccount />
           </AdminProtectedRoute>
         ,
       },

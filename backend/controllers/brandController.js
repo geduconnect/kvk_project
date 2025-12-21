@@ -7,24 +7,42 @@ import { db } from "../db.js";
 export const createBrand = async (req, res) => {
   try {
     const { brand_name } = req.body;
-    const image = req.file ? `/uploads/${req.file.filename}` : null;
 
     if (!brand_name) {
       return res.status(400).json({ error: "Brand name is required" });
     }
 
-    await db.query("INSERT INTO brands (brand_name, image) VALUES (?, ?)", [
-      brand_name,
-      image,
-    ]);
+    if (!req.files || !req.files.image) {
+      return res.status(400).json({ error: "Brand image is required" });
+    }
 
-    res.json({ message: "Brand added successfully" });
+    const imageFile = req.files.image;
+
+    const fileName = Date.now() + path.extname(imageFile.name);
+    const uploadPath = `uploads/${fileName}`;
+
+    // 🔥 NO AWAIT → Use callback to prevent "Unexpected end of form"
+    imageFile.mv(uploadPath, async (err) => {
+      if (err) {
+        console.error("Upload error:", err);
+        return res.status(500).json({ error: "Image upload failed" });
+      }
+
+      const imageURL = `/uploads/${fileName}`;
+
+      await db.query(
+        "INSERT INTO brands (brand_name, image) VALUES (?, ?)",
+        [brand_name, imageURL]
+      );
+
+      return res.json({ message: "Brand added successfully" });
+    });
+
   } catch (error) {
     console.error("Error creating brand:", error);
     res.status(500).json({ error: "Failed to create brand" });
   }
 };
-
 // =============================
 // UPDATE BRAND
 // =============================
@@ -62,7 +80,6 @@ export const getBrandById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch brand" });
   }
 };
-
 
 // ✅ GET BRANDS BY CATEGORY
 export const getBrandsByCategory = async (req, res) => {

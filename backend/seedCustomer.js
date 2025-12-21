@@ -4,9 +4,9 @@ import { db } from "./db.js";
 
 const seedCustomer = async () => {
   try {
-    const customerName = "John Doe";
-    const email = "customer@example.com";
-    const password = "Customer@123"; // Plain password
+    const customerName = "Farhan";
+    const email = "farhan@kvk.com";
+    const password = "Farhan@123"; // Plain password
     const role = "customer";         // optional if you track role
 
     // Check if customer already exists

@@ -1,79 +1,74 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import api from "./api"; // centralized axios
+import { useNavigate } from "react-router-dom";
+import api from "./api";
 
 export const MyAccount = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const [profile, setProfile] = useState(null);
 
-  // Fetch logged-in user profile
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // ✅ FETCH ADMIN PROFILE
   useEffect(() => {
     if (!token) {
-      navigate("/admin/login");
+      navigate("/");
       return;
     }
 
     const fetchProfile = async () => {
       try {
-        // Decode token to get user ID (JWT payload contains id & role)
         const payload = JSON.parse(atob(token.split(".")[1]));
         const userId = payload.id;
 
-        // Fetch user details
-        const res = await api.get(`/users/${userId}`);
+        const res = await api.get(`/users/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         setProfile(res.data);
       } catch (err) {
-        console.error("Error fetching profile:", err.response?.data || err.message);
-
-        // Unauthorized or invalid token
+        console.error("❌ Error fetching profile:", err);
         localStorage.removeItem("token");
-        navigate("/admin/login");
+        navigate("/login");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProfile();
   }, [token, navigate]);
 
- const handleLogout = () => {
-  localStorage.removeItem("token"); // remove "token", not "adminToken"
-  navigate("/admin/login");
-};
+  // ✅ LOGOUT
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  if (loading) return <p style={{ textAlign: "center" }}>Loading profile...</p>;
+  if (error) return <p className="error-msg">{error}</p>;
+  if (!profile) return null;
+
   return (
-    <div className="my-account-page">
-      <nav style={{ marginBottom: "20px" }}>
-        {!token ? (
-          <>
-            <Link to="/admin/login" style={{ marginRight: "10px" }}>Login</Link>
-            <Link to="/signup" style={{ marginRight: "10px" }}>Signup</Link>
-          </>
-        ) : (
-          <>
-            <Link to="/dashboard" style={{ marginRight: "10px" }}>Dashboard</Link>
-            <Link to="/account" style={{ marginRight: "10px" }}>My Account</Link>
-            <button onClick={handleLogout}>Logout</button>
-          </>
-        )}
-      </nav>
+    <div className="profile-container">
+      <h2 className="profile-title">Admin Profile</h2>
 
-      {/* Profile Section */}
-      {profile ? (
-        <div className="profile-card">
-          <h2>My Profile</h2>
-          <p><strong>Name:</strong> {profile.name}</p>
-          <p><strong>Email:</strong> {profile.email}</p>
-          <p><strong>Mobile:</strong> {profile.mobile || "-"}</p>
-          <p><strong>Role:</strong> {profile.role}</p>
-          <p><strong>State:</strong> {profile.state || "-"}</p>
-          <p><strong>City:</strong> {profile.city || "-"}</p>
-          <p><strong>Address:</strong> {profile.address || "-"}</p>
-          <p><strong>Pincode:</strong> {profile.pincode || "-"}</p>
+      <div className="profile-card">
+        <p><b>Name:</b> {profile.name}</p>
+        <p><b>Email:</b> {profile.email}</p>
+        <p><b>Role:</b> {profile.role || "Admin"}</p>
+
+        {profile.mobile && <p><b>Mobile:</b> {profile.mobile}</p>}
+        {profile.address && <p><b>Address:</b> {profile.address}</p>}
+
+        <div className="logout-box">
+          <button className="logout-btn" onClick={handleLogout}>
+            Logout
+          </button>
         </div>
-      ) : (
-        <p>Loading profile...</p>
-      )}
-
-      <Outlet />
+      </div>
     </div>
   );
 };

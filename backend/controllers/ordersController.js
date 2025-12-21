@@ -1,7 +1,7 @@
 import { db } from "../db.js";
 
 // ✅ Create a new order with items
-export const addOrder = (req, res) => {
+export const addOrder = async (req, res) => {
   console.log("✅ FULL BODY RECEIVED:", req.body);
 
   const {
@@ -18,75 +18,80 @@ export const addOrder = (req, res) => {
     return res.status(400).json({ message: "Missing required fields" });
   }
 
-  const orderQuery = `
-    INSERT INTO orders 
-    (customerId, orderDate, totalCost, status, paymentMethod, paymentStatus, remarks)
-    VALUES (?, NOW(), ?, ?, ?, ?, ?)
-  `;
+  try {
+    // ✅ 1. INSERT ORDER (PROMISE BASED)
+    const orderQuery = `
+      INSERT INTO orders 
+      (customerId, totalCost, status, paymentMethod, paymentStatus, remarks)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `;
 
-  db.query(
-    orderQuery,
-    [
+    const [orderResult] = await db.execute(orderQuery, [
       customerId,
       totalCost,
       status || "Pending",
       paymentMethod || null,
-      paymentStatus || null,
+      paymentStatus || "Pending",
       remarks || "",
-    ],
-    (err, result) => {
-      if (err) {
-        console.error("❌ ORDER INSERT ERROR:", err);
-        return res.status(500).json({ message: "Failed to create order", error: err });
-      }
+    ]);
 
-      const orderId = result.insertId;
-      console.log("✅ ORDER CREATED WITH ID:", orderId);
-      console.log("✅ ITEMS RECEIVED:", items);
+    const orderId = orderResult.insertId;
 
-      if (!Array.isArray(items) || items.length === 0) {
-        return res.status(201).json({
-          message: "Order created successfully (no items)",
-          orderId,
-        });
-      }
+    console.log("✅ ORDER CREATED WITH ID:", orderId);
 
-      const itemQuery = `
-        INSERT INTO order_items 
-        (orderId, product_id, quantity, description, amount)
-        VALUES ?
-      `;
+    // ✅ 2. IF NO ITEMS → RETURN SUCCESS
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(201).json({
+        message: "Order created successfully (no items)",
+        orderId,
+      });
+    }
 
-      const values = items.map((i) => [
+    // ✅ 3. INSERT ORDER ITEMS (PROMISE LOOP)
+    const itemQuery = `
+      INSERT INTO order_items 
+      (orderId, product_id, quantity, description, amount)
+      VALUES (?, ?, ?, ?, ?)
+    `;
+
+    for (const i of items) {
+      console.log("➡️ INSERTING ITEM:", i);
+
+      await db.execute(itemQuery, [
         orderId,
         Number(i.productId),
         Number(i.quantity || 1),
         i.description || "",
         Number(i.amount),
       ]);
-
-      console.log("✅ FINAL ITEM INSERT VALUES:", values);
-
-      db.query(itemQuery, [values], (err2) => {
-        if (err2) {
-          console.error("❌ ORDER ITEMS INSERT ERROR:", err2);
-          return res.status(500).json({
-            message: "Order created but items failed",
-            error: err2,
-          });
-        }
-
-        console.log("✅ ORDER ITEMS INSERTED SUCCESSFULLY");
-
-        res.status(201).json({
-          message: "Order created successfully",
-          orderId,
-        });
-      });
     }
-  );
-};
 
+    console.log("✅✅ ALL ORDER ITEMS INSERTED SUCCESSFULLY");
+    const invoiceNo = "INV-" + String(orderId).padStart(4, "0");
+
+    await db.execute(
+      `
+      INSERT INTO transactions (orderId, invoice_no, amount, status)
+      VALUES (?, ?, ?, ?)
+      `,
+      [orderId, invoiceNo, totalCost, paymentStatus || "PENDING"]
+    );
+
+    console.log("🧾 Transaction created for order", orderId);
+
+    // ✅ 4. FINAL SUCCESS RESPONSE
+    return res.status(201).json({
+      message: "Order + Transaction created successfully",
+      orderId,
+    });
+  } catch (err) {
+    console.error("❌ ADD ORDER FAILED:", err);
+    return res.status(500).json({
+      message: "Failed to create order",
+      error: err.sqlMessage || err.message || err,
+    });
+  }
+};
 
 // ✅ Get all orders with items
 export const getOrders = async (req, res) => {
@@ -239,6 +244,56 @@ export const getOrderById = async (req, res) => {
   } catch (err) {
     console.error("Error fetching order:", err);
     res.status(500).json({ message: "Server error fetching order" });
+  }
+};
+export const getPublicOrderById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [orderRows] = await db.execute(
+      `
+      SELECT 
+        o.id,
+        o.orderDate,
+        o.status,
+        o.totalCost,
+        c.customerName,
+        c.email,
+        c.mobile
+      FROM orders o
+      JOIN customers c ON o.customerId = c.id
+      WHERE o.id = ?
+    `,
+      [id]
+    );
+
+    if (!orderRows.length) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    const [itemRows] = await db.execute(
+      `
+      SELECT 
+        id,
+        description,
+        quantity,
+        amount
+      FROM order_items
+      WHERE orderId = ?
+    `,
+      [id]
+    );
+
+    return res.status(200).json({
+      ...orderRows[0],
+      items: itemRows,
+    });
+  } catch (err) {
+    console.error("❌ PUBLIC TRACK ERROR:", err);
+    return res.status(500).json({
+      message: "Failed to fetch order",
+      error: err.message,
+    });
   }
 };
 

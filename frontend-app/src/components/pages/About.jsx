@@ -64,7 +64,7 @@ export const About = () => {
                   <img src={aboutImg} alt="" />
                 </div>
                 <div className="about-upper-content">
-                  <h2 className="about-upper-content-title">Welcome to Nest</h2>
+                  <h2 className="about-upper-content-title">Welcome to Krishi Vikas Kendra</h2>
                   <p className="about-upper-content-desc">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -162,9 +162,8 @@ export const About = () => {
           ))}
         </div>
       </section>
-
-      <section className="container mb-50 d-none d-md-block">
-        <div className="row about-count">
+      <section className="about-upper">
+        <div className="about-count">
           {[
             { count: 12, label: "Glorious years" },
             { count: 36, label: "Happy clients" },
@@ -172,10 +171,7 @@ export const About = () => {
             { count: 24, label: "Team advisor" },
             { count: 26, label: "Products Sale" },
           ].map((item, index) => (
-            <div
-              className="col-lg-1-5 col-md-6 text-center mb-lg-0 mb-md-5"
-              key={index}
-            >
+            <div className="about-count-item" key={index}>
               <h1 className="heading-1">
                 <span className="count">{item.count}</span>+
               </h1>
@@ -184,91 +180,66 @@ export const About = () => {
           ))}
         </div>
       </section>
-      <div className="container">
-        <div className="row">
-          <div className="col-xl-10 col-lg-12 m-auto">
-            <section className="mb-50">
-              <h2 className="title style-3 mb-40 text-center">
-                Our Team
-              </h2>
-              <div className="row">
-                <div className="col-lg-4 mb-lg-0 mb-md-5 mb-sm-5">
-                  <h6 className="mb-5 text-brand">Our Team</h6>
-                  <h1 className="mb-30">Meet Our Expert Team</h1>
-                  <p className="mb-30">
-                    Proin ullamcorper pretium orci. Donec necscele
-                    risque leo. Nam massa dolor imperdiet neccon sequata
-                    congue idsem. Maecenas malesuada faucibus finibus.
-                  </p>
-                  <p className="mb-30">
-                    Proin ullamcorper pretium orci. Donec necscele
-                    risque leo. Nam massa dolor imperdiet neccon sequata
-                    congue idsem. Maecenas malesuada faucibus finibus.
-                  </p>
-                  <a href="#" className="btn">
-                    View All Members
-                  </a>
-                </div>
-                <div className="col-lg-8">
-                  <div className="row">
-                    {[
-                      {
-                        img: "about-6.png",
-                        name: "H. Merinda",
-                        title: "CEO & Co-Founder",
-                      },
-                      {
-                        img: "about-8.png",
-                        name: "Dilan Specter",
-                        title: "Head Engineer",
-                      },
-                    ].map((member, index) => (
-                      <div className="col-lg-6 col-md-6" key={index}>
-                        <div className="team-card">
-                          <img
-                            src={`assets/imgs/page/${member.img}`}
-                            alt=""
-                          />
-                          <div className="content text-center">
-                            <h4 className="mb-5">{member.name}</h4>
-                            <span>{member.title}</span>
-                            <div className="social-network mt-20">
-                              <a href="#">
-                                <img
-                                  src="assets/imgs/theme/icons/icon-facebook-brand.svg"
-                                  alt=""
-                                />
-                              </a>
-                              <a href="#">
-                                <img
-                                  src="assets/imgs/theme/icons/icon-twitter-brand.svg"
-                                  alt=""
-                                />
-                              </a>
-                              <a href="#">
-                                <img
-                                  src="assets/imgs/theme/icons/icon-instagram-brand.svg"
-                                  alt=""
-                                />
-                              </a>
-                              <a href="#">
-                                <img
-                                  src="assets/imgs/theme/icons/icon-youtube-brand.svg"
-                                  alt=""
-                                />
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+      <div className="team">
+        <section className="team-section">
+          <h2 className="team-title">Our Team</h2>
+
+          <div className="team-layout">
+
+            {/* LEFT CONTENT */}
+            <div className="team-intro">
+              <h6 className="team-subtitle">Our Team</h6>
+              <h1 className="team-heading">Meet Our Expert Team</h1>
+
+              <p>
+                Proin ullamcorper pretium orci. Donec necscele risque leo.
+                Nam massa dolor imperdiet neccon sequata congue idsem.
+              </p>
+
+              <p>
+                Proin ullamcorper pretium orci. Donec necscele risque leo.
+                Nam massa dolor imperdiet neccon sequata congue idsem.
+              </p>
+
+              <a href="#" className="team-btn">View All Members</a>
+            </div>
+
+            {/* RIGHT TEAM CARDS */}
+            <div className="team-row">
+              {[
+                {
+                  img: "about-6.png",
+                  name: "H. Merinda",
+                  title: "CEO & Co-Founder",
+                },
+                {
+                  img: "about-8.png",
+                  name: "Dilan Specter",
+                  title: "Head Engineer",
+                },
+              ].map((member, index) => (
+                <div className="team-card" key={index}>
+                  <img src={`assets/imgs/page/${member.img}`} alt="" />
+
+                  <div className="content">
+                    <h4>{member.name}</h4>
+                    <span>{member.title}</span>
+
+                    <div className="social-network">
+                      <a className="footer-item" href="#"><i className="fa-brands fa-facebook-f"></i></a>
+                      <a className="footer-item" href="#"><i className="fa-brands fa-instagram"></i></a>
+                      <a className="footer-item" href="#"><i className="fa-brands fa-x-twitter"></i></a>
+                      <a className="footer-item" href="#"><i className="fa-brands fa-square-whatsapp"></i></a>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </section>
+              ))}
+            </div>
+
           </div>
-        </div>
+        </section>
       </div>
+
     </>
   );
 };

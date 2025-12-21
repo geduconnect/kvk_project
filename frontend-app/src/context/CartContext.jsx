@@ -1,39 +1,80 @@
-// src/CartContext.jsx
-import React, { createContext, useContext, useState } from "react";
-import axios from "axios";
+// src/context/CartContext.jsx
+import React, { createContext, useContext, useState, useEffect } from "react";
+import api from "../components/api"; // ✅ centralized axios with cookies
+import { useCustomerAuth } from "./CustomerContext";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const userId = 1; // Replace with actual user
+  const { customer, loading } = useCustomerAuth();
 
-  const fetchCart = async () => {
-    const res = await axios.get(`http://localhost:8000/api/cart/${userId}`);
-    setCartItems(res.data);
-  };
+  // ✅ Fetch cart (COOKIE BASED)
+const fetchCart = async () => {
+  if (!customer) return;
 
+  try {
+    const { data } = await api.get("/cart");
+    setCartItems(data || []);
+  } catch (err) {
+    console.error("Fetch cart error:", err.message);
+  }
+};
+
+  // ✅ Auto-fetch cart when customer loads
+useEffect(() => {
+  if (customer && !loading) {
+    fetchCart();
+  }
+  // 🚨 DO NOT add fetchCart to dependency array
+}, [customer, loading]);
+  // ✅ Add to cart (COOKIE BASED)
   const addToCart = async (product) => {
-    await axios.post(`http://localhost:8000/api/cart`, {
-      userId,
-      productId: product.id,
-      quantity: product.quantity || 1,
-    });
-    setCartItems((prev) => [...prev, product]);
+    try {
+      await api.post("/cart", {
+        productId: product.id,
+        title: product.title,
+        price: product.price,
+        quantity: product.quantity || 1,
+        image: product.image || (product.images ? product.images[0] : ""),
+      });
+
+      fetchCart(); // ✅ refresh cart from DB
+    } catch (err) {
+      console.error("Add to cart error:", err);
+    }
   };
 
+  // ✅ Remove item from cart
   const removeFromCart = async (productId) => {
-    await axios.delete(`http://localhost:8000/api/cart/${userId}/${productId}`);
-    setCartItems((prev) => prev.filter((item) => item.id !== productId));
+    try {
+      await api.delete(`/cart/${productId}`);
+      fetchCart();
+    } catch (err) {
+      console.error("Remove cart error:", err);
+    }
   };
 
+  // ✅ Clear entire cart
   const clearCart = async () => {
-    await axios.delete(`http://localhost:8000/api/cart/clear/${userId}`);
-    setCartItems([]);
+    try {
+      await api.delete("/cart");
+      setCartItems([]);
+    } catch (err) {
+      console.error("Clear cart error:", err);
+    }
   };
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart, fetchCart }}>
+    <CartContext.Provider
+      value={{
+        cartItems,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        fetchCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

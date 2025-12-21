@@ -1,19 +1,20 @@
 import { db } from "../db.js";
 
 // ✅ Get stock summary by category name
+
 export const getStockByCategory = (req, res) => {
-  const { categoryName } = req.params;
+  const { categoryId } = req.params;
+
   const q = `
     SELECT 
-      SUM(CASE WHEN stock > 0 THEN 1 ELSE 0 END) as inStock,
-      SUM(CASE WHEN stock = 0 THEN 1 ELSE 0 END) as outStock
+      SUM(CASE WHEN stock > 0 THEN 1 ELSE 0 END) AS inStock,
+      SUM(CASE WHEN stock = 0 THEN 1 ELSE 0 END) AS outStock
     FROM products
-    WHERE category_name = ?
+    WHERE category_id = ?
   `;
 
-  db.query(q, [categoryName], (err, results) => {
+  db.query(q, [categoryId], (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
-
-    res.json(results[0]); // { inStock: X, outStock: Y }
+    res.json(results[0]);
   });
 };

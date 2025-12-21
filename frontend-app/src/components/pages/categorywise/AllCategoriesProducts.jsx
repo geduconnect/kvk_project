@@ -65,119 +65,123 @@ export const AllCategoriesProducts = () => {
   if (!categories.length) return <p>{message || "No categories available"}</p>;
 
   return (
-    <div className="all-categories-container">
-      {categories.map((category) => (
-        <div key={category.id} className="category-section">
-          {/* Category Header */}
-          <div className="growth-title">
-            <h2>{category.name}</h2>
-            <div className="view-all-btn-container">
+    <div className="daily-deals">
+
+      <div className="dailydeals-container">
+        {categories.map((category) => (
+          <div key={category.id} className="category-section">
+            {/* Category Header */}
+            <div
+              className="section-title"
+
+            >
+              <h2>{category.name}</h2>
+              {/* <div className="view-all-btn-container"> */}
               <Link to={`/products-categories/${category.name}`}>
                 <button className="view-all-btn">View All</button>
               </Link>
+              {/* </div> */}
             </div>
-          </div>
 
-          {/* Category Products */}
-          <div className="daily-deals">
-            <div className="product-wrapper">
-              <div className="dailydeals-content">
-                {productsByCategory[category.id] &&
+            {/* Category Products */}
+            <div className="dailydeals-content">
+
+              {productsByCategory[category.id] &&
                 productsByCategory[category.id].length > 0 ? (
-                  productsByCategory[category.id].map((product) => (
-                    <div key={product.id} className="product-card">
-                      <div className="product-imgcard">
-                        {product.images && product.images[0] ? (
-                          <img
-                            className="product-image"
-                            src={`http://localhost:8000${product.images[0]}`}
-                            alt={product.name || product.title}
-                          />
-                        ) : (
-                          <span>No Image</span>
-                        )}
+                productsByCategory[category.id].map((product) => (
+                  <div key={product.id} className="product-card">
+                    <div className="product-imgcard">
+                      {product.images && product.images[0] ? (
+                        <img
+                          className="product-image"
+                          src={`http://localhost:8000${product.images[0]}`}
+                          alt={product.name || product.title}
+                        />
+                      ) : (
+                        <span>No Image</span>
+                      )}
 
-                        {/* Preview Icon */}
-                        <div className="img_overlay">
-                          <ul className="ddproduct-product-overlay">
-                            <Link
-                              to={`/products-categories/${category.name}/${product.id}`}
-                            >
-                              <li className="ddproduct-item-overlay">
-                                <img src={previewimg} alt="Preview" />
-                              </li>
-                            </Link>
-                          </ul>
-                        </div>
-
-                        {/* Wishlist Icon */}
-                        <div
-                          className="wishlist-icon"
-                          onClick={() => {
-                            addToWishlist({ ...product, quantity: 1 });
-                            showToast(
-                              `${product.name || product.title} added to wishlist!`
-                            );
-                          }}
-                        >
-                          <img src={wishlistimg} alt="Wishlist" />
-                        </div>
+                      {/* Preview Icon */}
+                      <div className="img_overlay">
+                        <ul className="ddproduct-product-overlay">
+                          <Link
+                            to={`/products-categories/${category.name}/${product.id}`}
+                          >
+                            <li className="ddproduct-item-overlay">
+                              <img src={previewimg} alt="Preview" />
+                            </li>
+                          </Link>
+                        </ul>
                       </div>
 
-                      {/* Product Info */}
-                      <div className="ddproduct-contentcard">
-                        <span>{product.category_name}</span>
-                        <h2>{product.name || product.title}</h2>
-                        <h6>{product.brand}</h6>
-                        <h5>
-                          Stock:{" "}
-                          {product.stock > 0
-                            ? `In Stock (${product.stock})`
-                            : "Out of Stock"}
-                        </h5>
-
-                        {/* Ratings */}
-                        <div className="product-ratings">
-                          <span className="fa fa-star checked"></span>
-                          <span className="fa fa-star checked"></span>
-                          <span className="fa fa-star checked"></span>
-                          <span className="fa fa-star"></span>
-                          <span className="fa fa-star"></span>
-                        </div>
-
-                        {/* Price */}
-                        <div className="price">
-                          <span className="original-price">
-                            ₹{product.oldPrice || product.price}
-                          </span>
-                          <span className="discount-price">
-                            ₹{product.discount_price || product.price}
-                          </span>
-                        </div>
-
-                        {/* Add to Cart */}
-                        <button
-                          className="addtocart"
-                          onClick={() => {
-                            addToCart({ ...product, quantity: 1 });
-                            showToast(
-                              `${product.name || product.title} added to cart!`
-                            );
-                          }}
-                        >
-                          <i className="fa-solid fa-cart-shopping"></i> Add to Cart
-                        </button>
+                      {/* Wishlist Icon */}
+                      <div
+                        className="wishlist-icon"
+                        onClick={() => {
+                          addToWishlist({ ...product, quantity: 1 });
+                          showToast(
+                            `${product.name || product.title} added to wishlist!`
+                          );
+                        }}
+                      >
+                        <img src={wishlistimg} alt="Wishlist" />
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <p>No products available</p>
-                )}
-              </div>
+
+                    {/* Product Info */}
+                    <div className="ddproduct-contentcard">
+                      <span className="catName">{product.category_name}</span>
+                       <h2 className="ddproducts-name">{product.name || product.title}</h2>
+                      <h4>{product.brand}</h4>
+                      <h5>
+                        Stock:{" "}
+                        {product.stock > 0
+                          ? `In Stock (${product.stock})`
+                          : "Out of Stock"}
+                      </h5>
+
+                      {/* Ratings */}
+                      <div className="product-ratings">
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star checked"></span>
+                        <span className="fa fa-star"></span>
+                        <span className="fa fa-star"></span>
+                      </div>
+
+                      {/* Price */}
+                      <div className="price">
+                        <span className="original-price">
+                          ₹{product.oldPrice || product.price}
+                        </span>
+                        <span className="discount-price">
+                          ₹{product.discount_price || product.price}
+                        </span>
+                      </div>
+
+                      {/* Add to Cart */}
+                      <button
+                        className="addtocart"
+                        onClick={() => {
+                          addToCart({ ...product, quantity: 1 });
+                          showToast(
+                            `${product.name || product.title} added to cart!`
+                          );
+                        }}
+                      >
+                        <i className="fa-solid fa-cart-shopping"></i> Add to Cart
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No products available</p>
+              )}
             </div>
           </div>
-        </div>
-      ))}
+
+        ))}
+      </div>
     </div>
   );
 };
