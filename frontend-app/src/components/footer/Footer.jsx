@@ -134,44 +134,44 @@ export const Footer = () => {
         </div>
       </footer>
 
-     <div class="footer-bottom-wrapper">
-  <div class="container">
-    <div class="footer-row">
-      <div class="footer-col-left">
-        <p class="footer-copy">
-          © 2026 <strong class="brand-text">KRISHI VIKASH KENDRA</strong> — All rights reserved.
-        </p>
+      <div class="footer-bottom-wrapper">
+        <div class="container">
+          <div class="footer-row">
+            <div class="footer-col-left">
+              <p class="footer-copy">
+                © 2026 <strong class="brand-text">KRISHI VIKASH KENDRA</strong> — All rights reserved.
+              </p>
+            </div>
+
+            <div class="footer-col-center">
+              <div class="hotline-item">
+                <img src="assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
+                <p>+91 93082 70123 <span>8:00 AM – 10:00 PM</span></p>
+              </div>
+
+              <div class="hotline-item">
+                <img src="assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
+                <p>+91 93082 70123 <span>24/7 Support</span></p>
+              </div>
+            </div>
+
+            <div class="footer-col-right">
+              <h6 class="footer-title">Follow Us</h6>
+              <div class="footer-social">
+                <a href="#"><img src="assets/imgs/theme/icons/icon-facebook-white.svg" alt="" /></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-twitter-white.svg" alt="" /></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-instagram-white.svg" alt="" /></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest-white.svg" alt="" /></a>
+                <a href="#"><img src="assets/imgs/theme/icons/icon-youtube-white.svg" alt="" /></a>
+              </div>
+              {/* <p class="footer-subtext">Get 15% off on your first subscription</p> */}
+            </div>
+
+          </div>
+        </div>
       </div>
 
-      <div class="footer-col-center">
-        <div class="hotline-item">
-          <img src="assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
-          <p>+91 93082 70123 <span>8:00 AM – 10:00 PM</span></p>
-        </div>
 
-        <div class="hotline-item">
-          <img src="assets/imgs/theme/icons/phone-call.svg" alt="hotline" />
-          <p>+91 93082 70123 <span>24/7 Support</span></p>
-        </div>
-      </div>
-
-      <div class="footer-col-right">
-        <h6 class="footer-title">Follow Us</h6>
-        <div class="footer-social">
-          <a href="#"><img src="assets/imgs/theme/icons/icon-facebook-white.svg" alt="" /></a>
-          <a href="#"><img src="assets/imgs/theme/icons/icon-twitter-white.svg" alt="" /></a>
-          <a href="#"><img src="assets/imgs/theme/icons/icon-instagram-white.svg" alt="" /></a>
-          <a href="#"><img src="assets/imgs/theme/icons/icon-pinterest-white.svg" alt="" /></a>
-          <a href="#"><img src="assets/imgs/theme/icons/icon-youtube-white.svg" alt="" /></a>
-        </div>
-        {/* <p class="footer-subtext">Get 15% off on your first subscription</p> */}
-      </div>
-
-    </div>
-  </div>
-</div>
-
-      
     </>
   );
 };

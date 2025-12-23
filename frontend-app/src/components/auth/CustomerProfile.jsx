@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useCustomerAuth } from "../../context/CustomerContext";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
-axios.defaults.baseURL = "http://localhost:8000/api";
-axios.defaults.withCredentials = true;
+// 💡 Use axios instance instead of axios
 
 export const CustomerProfile = () => {
   const { customer, logout, setCustomer } = useCustomerAuth();
@@ -20,7 +19,6 @@ export const CustomerProfile = () => {
     email: "",
   });
 
-  // ✅ Password states
   const [showPasswordBox, setShowPasswordBox] = useState(false);
   const [passwordData, setPasswordData] = useState({
     oldPassword: "",
@@ -30,7 +28,7 @@ export const CustomerProfile = () => {
 
   const [loading, setLoading] = useState(true);
 
-  // ✅ Load logged-in customer
+  // Load logged-in customer
   useEffect(() => {
     if (customer) {
       setFormData({
@@ -46,12 +44,12 @@ export const CustomerProfile = () => {
     }
   }, [customer]);
 
-  // ✅ Profile input change
+  // Profile input change
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  // ✅ Password input change
+  // Password input change
   const handlePasswordChange = (e) => {
     setPasswordData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -60,7 +58,7 @@ export const CustomerProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.put(`/customers/profile`, formData);
+      const res = await api.put(`/customers/profile`, formData);
       alert("✅ Profile updated successfully!");
       setCustomer(res.data);
     } catch (err) {
@@ -88,7 +86,7 @@ export const CustomerProfile = () => {
     }
 
     try {
-      await axios.put("/customers/change-password", {
+      await api.put("/customers/change-password", {
         oldPassword,
         newPassword,
       });
@@ -113,7 +111,7 @@ export const CustomerProfile = () => {
   return (
     <div className="customer-profile-page">
       <div className="customer-profile-card">
-        {/* ✅ HEADER */}
+        {/* HEADER */}
         <div className="customer-profile-header">
           <div className="avatar-circle">
             {formData.customerName?.charAt(0)?.toUpperCase() || "U"}
@@ -124,7 +122,7 @@ export const CustomerProfile = () => {
           </div>
         </div>
 
-        {/* ✅ PROFILE FORM */}
+        {/* PROFILE FORM */}
         <form onSubmit={handleSubmit} className="customer-form">
           <div className="customer-form-grid">
             <div className="form-group">
@@ -185,9 +183,7 @@ export const CustomerProfile = () => {
           </div>
 
           <div className="customer-profile-actions">
-            <button type="submit" className="btn primary">
-              Save Changes
-            </button>
+            <button type="submit" className="btn primary">Save Changes</button>
 
             <button
               type="button"
@@ -210,7 +206,7 @@ export const CustomerProfile = () => {
           </div>
         </form>
 
-        {/* ✅ PASSWORD CHANGE BOX */}
+        {/* PASSWORD CHANGE BOX */}
         {showPasswordBox && (
           <form className="password-box" onSubmit={handlePasswordSubmit}>
             <h3>Change Password</h3>

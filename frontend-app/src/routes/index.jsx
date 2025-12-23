@@ -11,8 +11,7 @@ import { About } from "../components/pages/About";
 import { ContactPage } from "../components/pages/ContactPage";
 import { FeatureCategoriesPage } from "../components/pages/popular/FeatureCategoriesPage";
 import { DailyDealsProductPage } from "../components/pages/dailydeals/DailyDealsProductPage";
-import { SmartFarmingProductPage } from "../components/pages/smartfarming/SmartFarmingProductPage";
-import { SeasonalProductsPage } from "../components/pages/seasonalproducts/SeasonalProductsPage";
+
 import { ProductListing } from "../components/pages/listing/ProductListing";
 import { SingleProductListing } from "../components/pages/listing/SingleProductListing";
 import { CartPage } from "../components/pages/cart/CartPage";
@@ -59,9 +58,7 @@ const router = createBrowserRouter([
       { path: "daily-deals/:categoryName/:productId", element: <DailyDealsProductPage /> },
 
       // Smart Farming / Seasonal
-      { path: "smart-farming/:categoryName/:productName", element: <SmartFarmingProductPage /> },
-      { path: "seasonal/:categoryName/:productName", element: <SeasonalProductsPage /> },
-
+ 
       // Product Routes
       { path: "all-categories", element: <AllCategoriesProducts /> },
       { path: "products-categories/:categoryName", element: <ProductListing /> },
